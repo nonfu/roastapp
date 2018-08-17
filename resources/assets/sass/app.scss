@@ -1,0 +1,14 @@
+@charset "UTF-8";
+
+/* ==========================================================================
+    Builds our style structure
+        https://sass-guidelin.es/#the-7-1-pattern
+   ========================================================================== */
+/**
+ * Table of Contents:
+ *
+ *  1. Abstracts
+ */
+@import 'abstracts/variables';
+
+@import 'node_modules/foundation-sites/assets/foundation.scss';
