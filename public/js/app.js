@@ -58944,8 +58944,63 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
-/* harmony default export */ __webpack_exports__["default"] = ({});
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            name: '',
+            address: '',
+            city: '',
+            state: '',
+            zip: ''
+        };
+    },
+
+    methods: {
+        submitNewCafe: function submitNewCafe() {
+            this.$store.dispatch('addCafe', {
+                name: this.name,
+                address: this.address,
+                city: this.city,
+                state: this.state,
+                zip: this.zip
+            });
+        }
+    }
+});
 
 /***/ }),
 /* 68 */
@@ -58955,7 +59010,158 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div")
+  return _c("div", { staticClass: "page" }, [
+    _c("form", [
+      _c("div", { staticClass: "grid-container" }, [
+        _c("div", { staticClass: "grid-x grid-padding-x" }, [
+          _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
+            _c("label", [
+              _vm._v("名称\n                        "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.name,
+                    expression: "name"
+                  }
+                ],
+                attrs: { type: "text", placeholder: "咖啡店名" },
+                domProps: { value: _vm.name },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.name = $event.target.value
+                  }
+                }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
+            _c("label", [
+              _vm._v("地址\n                        "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.address,
+                    expression: "address"
+                  }
+                ],
+                attrs: { type: "text", placeholder: "地址" },
+                domProps: { value: _vm.address },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.address = $event.target.value
+                  }
+                }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
+            _c("label", [
+              _vm._v("城市\n                        "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.city,
+                    expression: "city"
+                  }
+                ],
+                attrs: { type: "text", placeholder: "城市" },
+                domProps: { value: _vm.city },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.city = $event.target.value
+                  }
+                }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
+            _c("label", [
+              _vm._v("省份\n                        "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.state,
+                    expression: "state"
+                  }
+                ],
+                attrs: { type: "text", placeholder: "省份" },
+                domProps: { value: _vm.state },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.state = $event.target.value
+                  }
+                }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
+            _c("label", [
+              _vm._v("邮编\n                        "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.zip,
+                    expression: "zip"
+                  }
+                ],
+                attrs: { type: "text", placeholder: "邮编" },
+                domProps: { value: _vm.zip },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.zip = $event.target.value
+                  }
+                }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
+            _c(
+              "a",
+              {
+                staticClass: "button",
+                on: {
+                  click: function($event) {
+                    _vm.submitNewCafe()
+                  }
+                }
+              },
+              [_vm._v("提交")]
+            )
+          ])
+        ])
+      ])
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -61302,7 +61508,8 @@ var cafes = {
         cafesLoadStatus: 0,
 
         cafe: {},
-        cafeLoadStatus: 0
+        cafeLoadStatus: 0,
+        cafeAddStatus: 0
     },
     /**
      * Defines the actions used to retrieve the data.
@@ -61333,6 +61540,20 @@ var cafes = {
                 commit('setCafe', {});
                 commit('setCafeLoadStatus', 3);
             });
+        },
+        addCafe: function addCafe(_ref3, data) {
+            var commit = _ref3.commit,
+                state = _ref3.state,
+                dispatch = _ref3.dispatch;
+
+            commit('setCafeAddStatus', 1);
+
+            __WEBPACK_IMPORTED_MODULE_0__api_cafe_js__["a" /* default */].postAddNewCafe(data.name, data.address, data.city, data.state, data.zip).then(function (response) {
+                commit('setCafeAddStatus', 2);
+                dispatch('loadCafes');
+            }).catch(function () {
+                commit('setCafeAddStatus', 3);
+            });
         }
     },
     /**
@@ -61350,6 +61571,9 @@ var cafes = {
         },
         setCafe: function setCafe(state, cafe) {
             state.cafe = cafe;
+        },
+        setCafeAddStatus: function setCafeAddStatus(state, status) {
+            state.cafeAddStatus = status;
         }
     },
     /**
@@ -61367,6 +61591,9 @@ var cafes = {
         },
         getCafe: function getCafe(state) {
             return state.cafe;
+        },
+        getCafeAddStatus: function getCafeAddStatus(state) {
+            return state.cafeAddStatus;
         }
     }
 };
