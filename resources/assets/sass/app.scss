@@ -11,4 +11,14 @@
  */
 @import 'abstracts/variables';
 
+/**
+ * 2: Components
+ */
+@import 'components/validations';
+
+/**
+ * 3: Layouts
+ */
+@import 'layouts/page';
+
 @import 'node_modules/foundation-sites/assets/foundation.scss';

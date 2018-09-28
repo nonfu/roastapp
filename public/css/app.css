@@ -12,6 +12,24 @@
  */
 
 /**
+ * 2: Components
+ */
+
+span.validation {
+  color: red;
+  display: block;
+}
+
+/**
+ * 3: Layouts
+ */
+
+div.page {
+  margin-top: 25px;
+  min-height: calc(100vh - 152px);
+}
+
+/**
  * Foundation for Sites by ZURB
  * Version 6.5.0-rc.2
  * foundation.zurb.com
