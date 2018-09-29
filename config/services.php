@@ -39,5 +39,9 @@ return [
         'client_id' => env('GIT_CLIENT_ID'),
         'client_secret' => env('GIT_CLIENT_SECRECT'),
         'redirect' => env('GIT_REDIRECT')
+    ],
+
+    'gaode' => [
+        'geocode_api_key' => env('GAODE_MAPS_GEOCODE_API_KEY')
     ]
 ];
