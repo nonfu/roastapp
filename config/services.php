@@ -42,6 +42,6 @@ return [
     ],
 
     'gaode' => [
-        'geocode_api_key' => env('GAODE_MAPS_GEOCODE_API_KEY')
+        'ws_api_key' => env('GAODE_MAPS_WS_API_KEY'),
     ]
 ];

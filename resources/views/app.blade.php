@@ -23,6 +23,7 @@
 </div>
 
 <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
+<script src="https://webapi.amap.com/maps?v=1.4.8&key=33c20882595f1fecc2d31c8c73a38da7"></script>
 
 </body>
 </html>

@@ -18,7 +18,7 @@ class GaodeMaps
     {
         // 构建地理编码 API 请求 URL
         $address = urlencode($state . $city . $address); // 省、市、区、详细地址
-        $apiKey = config('services.gaode.geocode_api_key'); // Geocode API Key
+        $apiKey = config('services.gaode.ws_api_key'); // WebService API Key
         // 默认返回 JSON 格式响应
         $url = 'https://restapi.amap.com/v3/geocode/geo?address=' . $address . '&key=' . $apiKey;
 
