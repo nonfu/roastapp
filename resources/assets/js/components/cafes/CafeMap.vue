@@ -12,6 +12,7 @@
 </template>
 
 <script>
+    import { ROAST_CONFIG } from '../../config.js';
     export default {
         props: {
             'latitude': {
@@ -57,13 +58,20 @@
                 // 初始化点标记数组
                 this.markers = [];
 
+                var image = ROAST_CONFIG.APP_URL + '/storage/img/coffee-marker.png';
+                var icon = new AMap.Icon({
+                    image: image,  // Icon的图像
+                    imageSize: new AMap.Size(19, 33)
+                });
+
                 // 遍历所有咖啡店创建点标记
                 for (var i = 0; i < this.cafes.length; i++) {
 
                     // 为每个咖啡店创建点标记并设置经纬度
                     var marker = new AMap.Marker({
                         position: AMap.LngLat(parseFloat(this.cafes[i].latitude), parseFloat(this.cafes[i].longitude)),
-                        title: this.cafes[i].name
+                        title: this.cafes[i].name,
+                        icon: icon,
                     });
 
                     // 将点标记放到数组中
