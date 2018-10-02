@@ -58950,6 +58950,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
         'latitude': {
@@ -58973,7 +58974,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     data: function data() {
         return {
-            markers: []
+            markers: [],
+            infoWindows: []
         };
     },
     mounted: function mounted() {
@@ -58996,6 +58998,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             // 初始化点标记数组
             this.markers = [];
 
+            // 自定义点标记
             var image = __WEBPACK_IMPORTED_MODULE_0__config_js__["a" /* ROAST_CONFIG */].APP_URL + '/storage/img/coffee-marker.png';
             var icon = new AMap.Icon({
                 image: image, // Icon的图像
@@ -59009,7 +59012,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 var marker = new AMap.Marker({
                     position: AMap.LngLat(parseFloat(this.cafes[i].latitude), parseFloat(this.cafes[i].longitude)),
                     title: this.cafes[i].name,
-                    icon: icon
+                    icon: icon,
+                    map: this.map
+                });
+
+                // 自定义信息窗体
+                var infoWindow = new AMap.InfoWindow({
+                    content: this.cafes[i].name
+                });
+                this.infoWindows.push(infoWindow);
+
+                // 绑定点击事件到点标记对象，点击打开上面创建的信息窗体
+                marker.on('click', function () {
+                    infoWindow.open(this.getMap(), this.getPosition());
                 });
 
                 // 将点标记放到数组中
