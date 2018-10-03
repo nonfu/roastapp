@@ -16,9 +16,10 @@
         components: {
             Navigation
         },
-        created(){
-            this.$store.dispatch( 'loadCafes' );
-            this.$store.dispatch( 'loadUser' );
+        created() {
+            this.$store.dispatch('loadCafes');
+            this.$store.dispatch('loadUser');
+            this.$store.dispatch('loadBrewMethods');
         }
     }
 </script>

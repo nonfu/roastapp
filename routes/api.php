@@ -13,8 +13,8 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function(){
-    Route::get('/user', function( Request $request ){
+Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function () {
+    Route::get('/user', function (Request $request) {
         return $request->user();
     });
 
@@ -50,4 +50,15 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function(){
      | Description:    Adds a new cafe to the application
     */
     Route::post('/cafes', 'API\CafesController@postNewCafe');
+
+    /*
+     |-------------------------------------------------------------------------------
+     | Get All Brew methods
+     |-------------------------------------------------------------------------------
+     | URL:            /api/v1/brew-methods
+     | Controller:     API\BrewMethodsController@getBrewMethods
+     | Method:         GET
+     | Description:    Gets all of the brew methods in the application
+    */
+    Route::get('/brew-methods', 'API\BrewMethodsController@getBrewMethods');
 });

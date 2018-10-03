@@ -20,9 +20,9 @@ class CafesController extends Controller
     */
     public function getCafes()
     {
-        $cafes = Cafe::all();
+        $cafes = Cafe::with('brewMethods')->get();
 
-        return response()->json( $cafes );
+        return response()->json($cafes);
     }
 
     /*
@@ -37,8 +37,8 @@ class CafesController extends Controller
     */
     public function getCafe($id)
     {
-        $cafe = Cafe::where('id', '=', $id)->first();
-        return response()->json( $cafe );
+        $cafe = Cafe::where('id', '=', $id)->with('brewMethods')->first();
+        return response()->json($cafe);
     }
 
     /*
@@ -53,15 +53,18 @@ class CafesController extends Controller
     {
         $cafe = new Cafe();
 
-        $cafe->name     = $request->input('name');
-        $cafe->address  = $request->input('address');
-        $cafe->city     = $request->input('city');
-        $cafe->state    = $request->input('state');
-        $cafe->zip      = $request->input('zip');
+        $cafe->name = $request->input('name');
+        $cafe->address = $request->input('address');
+        $cafe->city = $request->input('city');
+        $cafe->state = $request->input('state');
+        $cafe->zip = $request->input('zip');
         $coordinates = GaodeMaps::geocodeAddress($cafe->address, $cafe->city, $cafe->state);
         $cafe->latitude = $coordinates['lat'];
         $cafe->longitude = $coordinates['lng'];
         $cafe->save();
+
+        $brewMethods = $request->input('brew_methods');
+        $cafe->brewMethods()->sync($brewMethods);
 
         return response()->json($cafe, 201);
     }
