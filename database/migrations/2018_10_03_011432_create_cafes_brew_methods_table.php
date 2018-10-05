@@ -15,9 +15,7 @@ class CreateCafesBrewMethodsTable extends Migration
     {
         Schema::create('cafes_brew_methods', function ($table) {
             $table->integer('cafe_id')->unsigned();
-            $table->foreign('cafe_id')->references('id')->on('cafes');
             $table->integer('brew_method_id')->unsigned();
-            $table->foreign('brew_method_id')->references('id')->on('brew_methods');
         });
     }
 

@@ -72,15 +72,14 @@
 
                     // 为每个咖啡店创建点标记并设置经纬度
                     var marker = new AMap.Marker({
-                        position: AMap.LngLat(parseFloat(this.cafes[i].latitude), parseFloat(this.cafes[i].longitude)),
-                        title: this.cafes[i].name,
-                        icon: icon,
-                        map: this.map
+                        position: new AMap.LngLat(parseFloat(this.cafes[i].latitude), parseFloat(this.cafes[i].longitude)),
+                        title: this.cafes[i].location_name,
+                        icon: icon
                     });
 
                     // 自定义信息窗体
                     var infoWindow = new AMap.InfoWindow({
-                        content: this.cafes[i].name
+                        content: this.cafes[i].name + this.cafes[i].location_name
                     });
                     this.infoWindows.push(infoWindow);
 

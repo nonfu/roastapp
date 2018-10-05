@@ -23,45 +23,45 @@ export const cafes = {
      * Defines the actions used to retrieve the data.
      */
     actions: {
-        loadCafes( { commit } ){
-            commit( 'setCafesLoadStatus', 1 );
+        loadCafes({commit}) {
+            commit('setCafesLoadStatus', 1);
 
             CafeAPI.getCafes()
-                .then( function( response ){
-                    commit( 'setCafes', response.data );
-                    commit( 'setCafesLoadStatus', 2 );
+                .then(function (response) {
+                    commit('setCafes', response.data);
+                    commit('setCafesLoadStatus', 2);
                 })
-                .catch( function(){
-                    commit( 'setCafes', [] );
-                    commit( 'setCafesLoadStatus', 3 );
+                .catch(function () {
+                    commit('setCafes', []);
+                    commit('setCafesLoadStatus', 3);
                 });
         },
 
-        loadCafe( { commit }, data ){
-            commit( 'setCafeLoadStatus', 1 );
+        loadCafe({commit}, data) {
+            commit('setCafeLoadStatus', 1);
 
-            CafeAPI.getCafe( data.id )
-                .then( function( response ){
-                    commit( 'setCafe', response.data );
-                    commit( 'setCafeLoadStatus', 2 );
+            CafeAPI.getCafe(data.id)
+                .then(function (response) {
+                    commit('setCafe', response.data);
+                    commit('setCafeLoadStatus', 2);
                 })
-                .catch( function(){
-                    commit( 'setCafe', {} );
-                    commit( 'setCafeLoadStatus', 3 );
+                .catch(function () {
+                    commit('setCafe', {});
+                    commit('setCafeLoadStatus', 3);
                 });
 
         },
 
-        addCafe( { commit, state, dispatch }, data ){
-            commit( 'setCafeAddStatus', 1 );
+        addCafe({commit, state, dispatch}, data) {
+            commit('setCafeAddStatus', 1);
 
-            CafeAPI.postAddNewCafe( data.name, data.address, data.city, data.state, data.zip )
-                .then( function( response ){
-                    commit( 'setCafeAddStatus', 2 );
-                    dispatch( 'loadCafes' );
+            CafeAPI.postAddNewCafe(data.name, data.locations, data.website, data.description, data.roaster)
+                .then(function (response) {
+                    commit('setCafeAddedStatus', 2);
+                    dispatch('loadCafes');
                 })
-                .catch( function(){
-                    commit( 'setCafeAddStatus', 3 );
+                .catch(function () {
+                    commit('setCafeAddedStatus', 3);
                 });
         }
     },
@@ -69,19 +69,19 @@ export const cafes = {
      * Defines the mutations used
      */
     mutations: {
-        setCafesLoadStatus( state, status ){
+        setCafesLoadStatus(state, status) {
             state.cafesLoadStatus = status;
         },
 
-        setCafes( state, cafes ){
+        setCafes(state, cafes) {
             state.cafes = cafes;
         },
 
-        setCafeLoadStatus( state, status ){
+        setCafeLoadStatus(state, status) {
             state.cafeLoadStatus = status;
         },
 
-        setCafe( state, cafe ){
+        setCafe(state, cafe) {
             state.cafe = cafe;
         },
 
@@ -93,23 +93,23 @@ export const cafes = {
      * Defines the getters used by the module
      */
     getters: {
-        getCafesLoadStatus( state ){
+        getCafesLoadStatus(state) {
             return state.cafesLoadStatus;
         },
 
-        getCafes( state ){
+        getCafes(state) {
             return state.cafes;
         },
 
-        getCafeLoadStatus( state ){
+        getCafeLoadStatus(state) {
             return state.cafeLoadStatus;
         },
 
-        getCafe( state ){
+        getCafe(state) {
             return state.cafe;
         },
 
-        getCafeAddStatus( state) {
+        getCafeAddStatus(state) {
             return state.cafeAddStatus;
         }
     }
