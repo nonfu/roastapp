@@ -61,4 +61,7 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function () {
      | Description:    Gets all of the brew methods in the application
     */
     Route::get('/brew-methods', 'API\BrewMethodsController@getBrewMethods');
+
+    Route::post('/cafes/{id}/like', 'API\CafesController@postLikeCafe');
+    Route::delete('/cafes/{id}/like', 'API\CafesController@deleteLikeCafe');
 });

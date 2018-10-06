@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Cafe extends Model
@@ -22,5 +23,16 @@ class Cafe extends Model
     public function parent()
     {
         return $this->hasOne(Cafe::class, 'id', 'parent');
+    }
+
+    // 与 user 间的多对对关联
+    public function likes()
+    {
+        return $this->belongstomany(user::class, 'users_cafes_likes', 'cafe_id', 'user_id');
+    }
+
+    public function userLike()
+    {
+        return $this->belongsToMany(User::class, 'users_cafes_likes', 'cafe_id', 'user_id')->where('user_id', auth()->id());
     }
 }
