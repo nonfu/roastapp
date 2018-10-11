@@ -44,4 +44,6 @@ export default {
     deleteLikeCafe: function (cafeID) {
         return axios.delete(ROAST_CONFIG.API_URL + '/cafes/' + cafeID + '/like');
     }
+
+
 }

@@ -10,7 +10,7 @@ class Tagger
     {
         foreach ($tags as $tag) {
             $name = trim($tag);
-            $newCafeTag = Tag::firstOrNew(array('name' => $name));
+            $newCafeTag = Tag::firstOrNew(array('tag' => $name));
             $newCafeTag->tag = $name;
             $newCafeTag->save();
             // 将标签和咖啡店关联起来

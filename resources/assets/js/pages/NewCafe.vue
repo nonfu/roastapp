@@ -17,7 +17,8 @@
                         <label>网址
                             <input type="text" placeholder="网址" v-model="website">
                         </label>
-                        <span class="validation" v-show="!validations.website.is_valid">{{ validations.website.text }}</span>
+                        <span class="validation"
+                              v-show="!validations.website.is_valid">{{ validations.website.text }}</span>
                     </div>
                     <div class="large-12 medium-12 small-12 cell">
                         <label>简介
@@ -68,6 +69,9 @@
                         </span>
                     </div>
                     <div class="large-12 medium-12 small-12 cell">
+                        <tags-input v-bind:unique="key"></tags-input>
+                    </div>
+                    <div class="large-12 medium-12 small-12 cell">
                         <a class="button" v-on:click="removeLocation(key)">移除位置</a>
                     </div>
                 </div>
@@ -85,6 +89,9 @@
 </template>
 
 <script>
+    import TagsInput from '../components/global/forms/TagsInput.vue';
+    import {EventBus} from '../event-bus.js';
+
     export default {
         data() {
             return {
@@ -126,11 +133,11 @@
                 let validNewCafeForm = true;
 
                 // 确保 name 字段不为空
-                if( this.name.trim() === '' ){
+                if (this.name.trim() === '') {
                     validNewCafeForm = false;
                     this.validations.name.is_valid = false;
                     this.validations.name.text = '请输入咖啡店的名字';
-                }else{
+                } else {
                     this.validations.name.is_valid = true;
                     this.validations.name.text = '';
                 }
@@ -192,7 +199,15 @@
                 return validNewCafeForm;
             },
             addLocation() {
-                this.locations.push({name: '', address: '', city: '', state: '', zip: '', methodsAvailable: []});
+                this.locations.push({
+                    name: '',
+                    address: '',
+                    city: '',
+                    state: '',
+                    zip: '',
+                    methodsAvailable: [],
+                    tags: ''
+                });
                 this.validations.locations.push({
                     address: {
                         is_valid: true,
@@ -238,11 +253,18 @@
                     }
                 };
 
+                EventBus.$emit('clear-tags');
+
                 this.addLocation();
             }
         },
         created() {
             this.addLocation();
+        },
+        mounted() {
+            EventBus.$on('tags-edited', function (tagsAdded) {
+                this.locations[tagsAdded.unique].tags = tagsAdded.tags;
+            }.bind(this));
         },
         computed: {
             brewMethods() {
@@ -264,5 +286,8 @@
                 }
             }
         },
+        components: {
+            TagsInput
+        }
     }
 </script>
