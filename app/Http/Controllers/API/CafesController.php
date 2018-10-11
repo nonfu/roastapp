@@ -5,10 +5,13 @@ namespace app\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCafeRequest;
 use App\Models\Cafe;
+use App\Models\Tag;
 use App\Utilities\GaodeMaps;
+use App\Utilities\Tagger;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Auth;
+use DB;
 
 class CafesController extends Controller
 {
@@ -94,8 +97,12 @@ class CafesController extends Controller
 
         // 冲泡方法
         $brewMethods = $locations[0]['methodsAvailable'];
+        // 标签信息
+        $tags = $locations[0]['tags'];
         // 保存与此咖啡店关联的所有冲泡方法（保存关联关系）
         $parentCafe->brewMethods()->sync($brewMethods);
+        // 绑定咖啡店与标签
+        Tagger::tagCafe($parentCafe, $tags, $request->user()->id);
 
         // 将当前咖啡店数据推送到已添加咖啡店数组
         array_push($addedCafes, $parentCafe->toArray());
@@ -124,6 +131,7 @@ class CafesController extends Controller
                 $cafe->save();
 
                 $cafe->brewMethods()->sync($locations[$i]['methodsAvailable']);
+                Tagger::tagCafe($cafe, $locations[$i]['tags'], $request->user()->id);
 
                 array_push($addedCafes, $cafe->toArray());
             }
@@ -148,6 +156,47 @@ class CafesController extends Controller
 
         $cafe->likes()->detach(Auth::user()->id);
 
+        return response(null, 204);
+    }
+
+    /*
+    |-------------------------------------------------------------------------------
+    | Adds Tags To A Cafe
+    |-------------------------------------------------------------------------------
+    | URL:            /api/v1/cafes/{id}/tags
+    | Controller:     API\CafesController@postAddTags
+    | Method:         POST
+    | Description:    Adds tags to a cafe for a user
+    */
+    public function postAddTags($cafeID)
+    {
+        // 从请求中获取标签信息
+        $tags = Request::get('tags');
+        $cafe = Cafe::find($cafeID);
+
+        // 将咖啡店和标签关联起来
+        Tagger::tagCafe($cafe, $tags, Auth::user()->id);
+
+        $cafe = Cafe::where('id', '=', $cafeID)
+            ->with('brewMethods')
+            ->with('userLike')
+            ->with('tags')
+            ->first();
+
+        return response()->json($cafe, 201);
+    }
+
+    /*
+    |-------------------------------------------------------------------------------
+    | Deletes A Cafe Tag
+    |-------------------------------------------------------------------------------
+    | URL:            /api/v1/cafes/{id}/tags/{tagID}
+    | Method:         DELETE
+    | Description:    Deletes a tag from a cafe for a user
+    */
+    public function deleteCafeTag($cafeID, $tagID)
+    {
+        DB::statement('DELETE FROM cafes_users_tags WHERE cafe_id = `' . $cafeID . '` AND tag_id = `' . $tagID . '` AND user_id = `' . Auth::user()->id . '`');
         return response(null, 204);
     }
 }

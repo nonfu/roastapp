@@ -60177,7 +60177,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         ToggleLike: __WEBPACK_IMPORTED_MODULE_2__components_cafes_ToggleLike_vue___default.a
     },
 
-    // 页面创建时通过路由中的参数I   D加载咖啡店数据
+    // 页面创建时通过路由中的参数ID加载咖啡店数据
     created: function created() {
         this.$store.dispatch('loadCafe', {
             id: this.$route.params.id
