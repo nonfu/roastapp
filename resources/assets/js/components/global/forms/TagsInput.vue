@@ -6,7 +6,7 @@
         margin-bottom: 20px;
 
         div.tags-input {
-            display: block;
+            display: table;
             -webkit-box-sizing: border-box;
             box-sizing: border-box;
             width: 100%;
@@ -122,6 +122,7 @@
 <script>
     import {ROAST_CONFIG} from '../../../config.js';
     import {EventBus} from '../../../event-bus.js';
+    import _ from 'lodash';
 
     export default {
         props: ['unique'],
@@ -201,18 +202,19 @@
                 }
             },
 
-            searchTags() {
-                if (this.currentTag.length > 2 && !this.pauseSearch) {
+            // 引入防抖动函数，在 300ms 后执行匿名函数内代码
+            searchTags: _.debounce( function(e) {
+                if( this.currentTag.length > 2 && !this.pauseSearch ){
                     this.searchSelectedIndex = -1;
-                    axios.get(ROAST_CONFIG.API_URL + '/tags', {
+                    axios.get( ROAST_CONFIG.API_URL + '/tags' , {
                         params: {
                             search: this.currentTag
                         }
-                    }).then(function (response) {
+                    }).then( function( response ){
                         this.tagSearchResults = response.data;
                     }.bind(this));
                 }
-            },
+            }, 300),
 
             // 检查标签是否重复
             checkDuplicates(tagName) {

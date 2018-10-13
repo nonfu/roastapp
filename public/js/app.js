@@ -59007,7 +59007,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         processFilters: function processFilters(filters) {
             // 如果没有设置任何过滤条件，则显示
-            if (filters.text == '' && filters.tags.length == 0 && filters.roaster == false && filters.brew_methods.length == 0) {
+            if (filters.text === '' && filters.tags.length === 0 && filters.roaster === false && filters.brew_methods.length === 0) {
                 this.show = true;
             } else {
                 // 初始化过滤标识符
@@ -59024,23 +59024,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }
 
                 // 文本筛选
-                if (filters.text != '' && this.processCafeTextFilter(this.cafe, filters.text)) {
+                if (filters.text !== '' && this.processCafeTextFilter(this.cafe, filters.text)) {
                     textPassed = true;
-                } else if (filters.text == '') {
+                } else if (filters.text === '') {
                     textPassed = true;
                 }
 
                 // 冲泡方法筛选
-                if (filters.brew_methods.length != 0 && this.processCafeBrewMethodsFilter(this.cafe, filters.brew_methods)) {
+                if (filters.brew_methods.length !== 0 && this.processCafeBrewMethodsFilter(this.cafe, filters.brew_methods)) {
                     brewMethodsPassed = true;
-                } else if (filters.brew_methods.length == 0) {
+                } else if (filters.brew_methods.length === 0) {
                     brewMethodsPassed = true;
                 }
 
                 // 标签筛选
-                if (filters.tags.length != 0 && this.processCafeTagsFilter(this.cafe, filters.tags)) {
+                if (filters.tags.length !== 0 && this.processCafeTagsFilter(this.cafe, filters.tags)) {
                     tagsPassed = true;
-                } else if (filters.tags.length == 0) {
+                } else if (filters.tags.length === 0) {
                     tagsPassed = true;
                 }
 
@@ -60274,6 +60274,28 @@ var render = function() {
     { attrs: { id: "home" } },
     [
       _c("div", { staticClass: "grid-container" }, [
+        _c("div", { staticClass: "grid-x" }, [
+          _c(
+            "div",
+            { staticClass: "large-12 medium-12 small-12 columns" },
+            [
+              _c(
+                "router-link",
+                {
+                  staticClass: "add-cafe-button",
+                  attrs: { to: { name: "newcafe" } }
+                },
+                [_vm._v("+ 新增咖啡店")]
+              )
+            ],
+            1
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _c("cafe-filter"),
+      _vm._v(" "),
+      _c("div", { staticClass: "grid-container" }, [
         _c(
           "div",
           { staticClass: "grid-x grid-padding-x" },
@@ -60296,29 +60318,7 @@ var render = function() {
           ],
           2
         )
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "grid-container" }, [
-        _c("div", { staticClass: "grid-x" }, [
-          _c(
-            "div",
-            { staticClass: "large-12 medium-12 small-12 columns" },
-            [
-              _c(
-                "router-link",
-                {
-                  staticClass: "add-cafe-button",
-                  attrs: { to: { name: "newcafe" } }
-                },
-                [_vm._v("+ 新增咖啡店")]
-              )
-            ],
-            1
-          )
-        ])
-      ]),
-      _vm._v(" "),
-      _c("cafe-filter")
+      ])
     ],
     1
   )

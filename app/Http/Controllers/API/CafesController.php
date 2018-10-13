@@ -9,6 +9,7 @@ use App\Models\Tag;
 use App\Utilities\GaodeMaps;
 use App\Utilities\Tagger;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Auth;
 use DB;
@@ -25,7 +26,11 @@ class CafesController extends Controller
     */
     public function getCafes()
     {
-        $cafes = Cafe::with('brewMethods')->get();
+        $cafes = Cafe::with('brewMethods')
+            ->with(['tags' => function ($query) {
+                $query->select('tag');
+            }])
+            ->get();
 
         return response()->json($cafes);
     }
@@ -160,19 +165,16 @@ class CafesController extends Controller
         return response(null, 204);
     }
 
-    /*
-    |-------------------------------------------------------------------------------
-    | Adds Tags To A Cafe
-    |-------------------------------------------------------------------------------
-    | URL:            /api/v1/cafes/{id}/tags
-    | Controller:     API\CafesController@postAddTags
-    | Method:         POST
-    | Description:    Adds tags to a cafe for a user
-    */
-    public function postAddTags($cafeID)
+    /**
+     * 给咖啡店添加标签
+     * @param $request
+     * @param $cafeID
+     * @return JsonResponse
+     */
+    public function postAddTags(Request $request, $cafeID)
     {
         // 从请求中获取标签信息
-        $tags = Request::get('tags');
+        $tags = $request->input('tags');
         $cafe = Cafe::find($cafeID);
 
         // 将咖啡店和标签关联起来
@@ -187,14 +189,12 @@ class CafesController extends Controller
         return response()->json($cafe, 201);
     }
 
-    /*
-    |-------------------------------------------------------------------------------
-    | Deletes A Cafe Tag
-    |-------------------------------------------------------------------------------
-    | URL:            /api/v1/cafes/{id}/tags/{tagID}
-    | Method:         DELETE
-    | Description:    Deletes a tag from a cafe for a user
-    */
+    /**
+     * 删除咖啡店上的标签
+     * @param $cafeID
+     * @param $tagID
+     * @return Response
+     */
     public function deleteCafeTag($cafeID, $tagID)
     {
         DB::statement('DELETE FROM cafes_users_tags WHERE cafe_id = `' . $cafeID . '` AND tag_id = `' . $tagID . '` AND user_id = `' . Auth::user()->id . '`');
