@@ -197,7 +197,7 @@ class CafesController extends Controller
      */
     public function deleteCafeTag($cafeID, $tagID)
     {
-        DB::statement('DELETE FROM cafes_users_tags WHERE cafe_id = `' . $cafeID . '` AND tag_id = `' . $tagID . '` AND user_id = `' . Auth::user()->id . '`');
+        DB::table('cafes_users_tags')->where('cafe_id', $cafeID)->where('tag_id', $tagID)->where('user_id', Auth::user()->id)->delete();
         return response(null, 204);
     }
 }
