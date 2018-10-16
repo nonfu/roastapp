@@ -14,7 +14,7 @@ import VueRouter from 'vue-router'
 /**
  * Extends Vue to use Vue Router
  */
-Vue.use( VueRouter );
+Vue.use(VueRouter);
 
 /**
  * Makes a new VueRouter that we will use to run all of the routes for the app.
@@ -23,28 +23,29 @@ export default new VueRouter({
     routes: [
         {
             path: '/',
+            redirect: {name: 'home'},
             name: 'layout',
-            component: Vue.component( 'Home', require( './pages/Layout.vue' ) ),
+            component: Vue.component('Home', require('./pages/Layout.vue')),
             children: [
                 {
                     path: 'home',
                     name: 'home',
-                    component: Vue.component( 'Home', require( './pages/Home.vue' ) )
+                    component: Vue.component('Home', require('./pages/Home.vue'))
                 },
                 {
                     path: 'cafes',
                     name: 'cafes',
-                    component: Vue.component( 'Cafes', require( './pages/Cafes.vue' ) ),
+                    component: Vue.component('Cafes', require('./pages/Cafes.vue')),
                 },
                 {
                     path: 'cafes/new',
                     name: 'newcafe',
-                    component: Vue.component( 'NewCafe', require( './pages/NewCafe.vue' ) )
+                    component: Vue.component('NewCafe', require('./pages/NewCafe.vue'))
                 },
                 {
                     path: 'cafes/:id',
                     name: 'cafe',
-                    component: Vue.component( 'Cafe', require( './pages/Cafe.vue' ) )
+                    component: Vue.component('Cafe', require('./pages/Cafe.vue'))
                 }
             ]
         }
