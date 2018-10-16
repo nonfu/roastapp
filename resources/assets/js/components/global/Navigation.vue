@@ -91,7 +91,7 @@
         computed: {
             // 从 Vuex 中获取用户加载状态
             userLoadStatus() {
-                return this.$store.getters.getUserLoadStatus;
+                return this.$store.getters.getUserLoadStatus();
             },
 
             // 从 Vuex 中获取用户信息

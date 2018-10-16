@@ -95,7 +95,9 @@ export const users = {
          Returns the user load status.
          */
         getUserLoadStatus( state ){
-            return state.userLoadStatus;
+            return function () {
+                return state.userLoadStatus;
+            }
         },
 
         /*
