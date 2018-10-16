@@ -55676,6 +55676,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
  */
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]);
 
+// 对需要认证才能访问的路由调用该方法实现 Vue Router 导航守卫
 function requireAuth(to, from, next) {
     function proceed() {
         // 如果用户信息已经加载并且不为空则说明该用户已登录，可以继续访问路由，否则跳转到首页
