@@ -5,14 +5,16 @@ namespace app\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCafeRequest;
 use App\Models\Cafe;
+use App\Models\CafePhoto;
 use App\Models\Tag;
 use App\Utilities\GaodeMaps;
 use App\Utilities\Tagger;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Auth;
-use DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class CafesController extends Controller
 {
@@ -100,6 +102,29 @@ class CafesController extends Controller
         // 添加者
         $parentCafe->added_by = $request->user()->id;
         $parentCafe->save();
+
+        $photo = $request->file('picture');
+        if ($photo && $photo->isValid()) {
+            $destinationPath = storage_path('app/public/photos/' . $parentCafe->id);
+
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath);
+            }
+
+            // 文件名
+            $filename = time() . '-' . $photo->getClientOriginalName();
+            // 保存文件到指定目录
+            $photo->move($destinationPath, $filename);
+
+            // 在数据库中创建新纪录保存刚刚上传的文件
+            $cafePhoto = new CafePhoto();
+
+            $cafePhoto->cafe_id = $parentCafe->id;
+            $cafePhoto->uploaded_by = Auth::user()->id;
+            $cafePhoto->file_url = $destinationPath . DIRECTORY_SEPARATOR . $filename;
+
+            $cafePhoto->save();
+        }
 
         // 冲泡方法
         $brewMethods = $locations[0]['methodsAvailable'];
