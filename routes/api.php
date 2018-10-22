@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 */
 
 // 公有路由，无需登录即可访问
-Route::group(['prefix' => 'v1'], function(){
+Route::group(['prefix' => 'v1'], function () {
 
     Route::get('/user', 'API\UsersController@getUser');
 
@@ -61,6 +61,28 @@ Route::group(['prefix' => 'v1'], function(){
     | Description:    Searches the tags if a query is set otherwise returns all tags
     */
     Route::get('/tags', 'API\TagsController@getTags');
+
+    /*
+    |-------------------------------------------------------------------------------
+    | Gets All Cities
+    |-------------------------------------------------------------------------------
+    | URL:            /api/v1/cities
+    | Controller:     API\CitiesController@getCities
+    | Method:         GET
+    | Description:    Get all cities
+    */
+    Route::get('/cities', 'API\CitiesController@getCities');
+
+    /*
+    |-------------------------------------------------------------------------------
+    | Gets An Individual City
+    |-------------------------------------------------------------------------------
+    | URL:            /api/v1/cities/{slug}
+    | Controller:     API\CitiesController@getCity
+    | Method:         GET
+    | Description:    Gets an individual city
+    */
+    Route::get('/cities/{slug}', 'API\CitiesController@getCity');
 });
 
 // 私有路由，需要登录才能访问

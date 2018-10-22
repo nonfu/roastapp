@@ -26,7 +26,7 @@
                         </label>
                     </div>
                     <div class="large-12 medium-12 small-12 cell">
-                        <label>Photo
+                        <label>图片
                             <input type="file" id="cafe-photo" ref="photo" v-on:change="handleFileUpload()"/>
                         </label>
                     </div>

@@ -17,23 +17,34 @@ export const cafes = {
 
         cafe: {},
         cafeLoadStatus: 0,
-        cafeAddStatus: 0,
 
+        cafeLiked: false,
         cafeLikeActionStatus: 0,
         cafeUnlikeActionStatus: 0,
 
-        cafeLiked: false
+        cafeAdded: {},
+        cafeAddStatus: 0,
+        cafeAddText: '',
+
+        cafeDeletedStatus: 0,
+        cafeDeleteText: '',
+
+        cafesView: 'map'
     },
     /**
      * Defines the actions used to retrieve the data.
      */
     actions: {
-        loadCafes({commit}) {
+        loadCafes({commit, rootState, dispatch}) {
             commit('setCafesLoadStatus', 1);
 
             CafeAPI.getCafes()
                 .then(function (response) {
                     commit('setCafes', response.data);
+                    dispatch('orderCafes', {
+                        order: rootState.filters.orderBy,
+                        direction: rootState.filters.orderDirection
+                    });
                     commit('setCafesLoadStatus', 2);
                 })
                 .catch(function () {
@@ -97,6 +108,37 @@ export const cafes = {
                 .catch(function () {
                     commit('setCafeUnlikeActionStatus', 3);
                 });
+        },
+
+        changeCafesView({commit, state, dispatch}, view) {
+            commit('setCafesView', view);
+        },
+
+        orderCafes({commit, state, dispatch}, data) {
+            let localCafes = state.cafes;
+
+            switch (data.order) {
+                case 'name':
+                    localCafes.sort(function (a, b) {
+                        if (data.direction === 'desc') {
+                            return ((a.company.name === b.company.name) ? 0 : ((a.company.name < b.company.name) ? 1 : -1));
+                        } else {
+                            return ((a.company.name === b.company.name) ? 0 : ((a.company.name > b.company.name) ? 1 : -1));
+                        }
+                    });
+                    break;
+                case 'most-liked':
+                    localCafes.sort(function (a, b) {
+                        if (data.direction === 'desc') {
+                            return ((a.likes_count === b.likes_count) ? 0 : ((a.likes_count < b.likes_count) ? 1 : -1));
+                        } else {
+                            return ((a.likes_count === b.likes_count) ? 0 : ((a.likes_count > b.likes_count) ? 1 : -1));
+                        }
+                    });
+                    break;
+            }
+
+            commit('setCafes', localCafes);
         }
     },
     /**
@@ -123,6 +165,14 @@ export const cafes = {
             state.cafeAddStatus = status;
         },
 
+        setCafeAdded( state, cafe ){
+            state.cafeAdded = cafe;
+        },
+
+        setCafeAddedText( state, text ){
+            state.cafeAddText = text;
+        },
+
         setCafeLikedStatus(state, status) {
             state.cafeLiked = status;
         },
@@ -133,6 +183,10 @@ export const cafes = {
 
         setCafeUnlikeActionStatus(state, status) {
             state.cafeUnlikeActionStatus = status;
+        },
+
+        setCafesView(state, view) {
+            state.cafesView = view
         }
     },
     /**
@@ -159,6 +213,14 @@ export const cafes = {
             return state.cafeAddStatus;
         },
 
+        getAddedCafe( state ){
+            return state.cafeAdded;
+        },
+
+        getCafeAddText( state ){
+            return state.cafeAddText;
+        },
+
         getCafeLikedStatus(state) {
             return state.cafeLiked;
         },
@@ -169,6 +231,10 @@ export const cafes = {
 
         getCafeUnlikeActionStatus(state) {
             return state.cafeUnlikeActionStatus;
+        },
+
+        getCafesView(state) {
+            return state.cafesView;
         }
     }
 };

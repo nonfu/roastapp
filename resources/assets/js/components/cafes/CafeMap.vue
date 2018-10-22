@@ -3,10 +3,10 @@
 
     div#cafe-map-container {
         position: absolute;
-        top: 50px;
+        top: 75px;
         left: 0px;
         right: 0px;
-        bottom: 50px;
+        bottom: 0px;
 
         div#cafe-map {
             position: absolute;
@@ -17,12 +17,14 @@
         }
 
         div.cafe-info-window {
+
             div.cafe-name {
                 display: block;
                 text-align: center;
                 color: $dark-color;
                 font-family: 'Josefin Sans', sans-serif;
             }
+
             div.cafe-address {
                 display: block;
                 text-align: center;
@@ -57,28 +59,36 @@
         <div id="cafe-map">
 
         </div>
-        <cafe-map-filter></cafe-map-filter>
     </div>
 </template>
 
 <script>
     import {ROAST_CONFIG} from '../../config.js';
-    import CafeMapFilter from './CafeMapFilter.vue';
     import {EventBus} from '../../event-bus.js';
 
-    import {CafeIsRoasterFilter} from '../../mixins/filters/CafeIsRoasterFilter.js';
+    import {CafeTypeFilter} from '../../mixins/filters/CafeTypeFilter.js';
     import {CafeBrewMethodsFilter} from '../../mixins/filters/CafeBrewMethodsFilter.js';
+    import {CafeTagsFilter} from '../../mixins/filters/CafeTagsFilter.js';
     import {CafeTextFilter} from '../../mixins/filters/CafeTextFilter.js';
+    import {CafeUserLikeFilter} from '../../mixins/filters/CafeUserLikeFilter.js';
+    import {CafeHasMatchaFilter} from '../../mixins/filters/CafeHasMatchaFilter.js';
+    import {CafeHasTeaFilter} from '../../mixins/filters/CafeHasTeaFilter.js';
+    import {CafeSubscriptionFilter} from '../../mixins/filters/CafeSubscriptionFilter.js';
+    import {CafeInCityFilter} from '../../mixins/filters/CafeInCityFilter.js';
+    import cafe from "../../api/cafe";
 
     export default {
         mixins: [
-            CafeIsRoasterFilter,
+            CafeTypeFilter,
             CafeBrewMethodsFilter,
-            CafeTextFilter
+            CafeTagsFilter,
+            CafeTextFilter,
+            CafeUserLikeFilter,
+            CafeHasMatchaFilter,
+            CafeHasTeaFilter,
+            CafeSubscriptionFilter,
+            CafeInCityFilter
         ],
-        components: {
-            CafeMapFilter
-        },
         props: {
             'latitude': {
                 type: Number,
@@ -95,7 +105,7 @@
             'zoom': {
                 type: Number,
                 default: function () {
-                    return 4
+                    return 5
                 }
             }
         },
@@ -106,6 +116,7 @@
             }
         },
         mounted() {
+            this.markers = [];
             this.map = new AMap.Map('cafe-map', {
                 center: [this.latitude, this.longitude],
                 zoom: this.zoom
@@ -113,14 +124,71 @@
             this.clearMarkers();
             this.buildMarkers();
 
-            // 监听 filters-updated 事件过滤点标记
-            EventBus.$on('filters-updated', function (filters) {
-                this.processFilters(filters);
+            // 监听位置选择事件
+            EventBus.$on('location-selected', function (cafe) {
+                var latLng = new AMap.LngLat(cafe.lat, cafe.lng);
+                this.map.setZoom(17);
+                this.map.panTo(latLng);
+            }.bind(this));
+
+            // 监听城市选择事件
+            EventBus.$on('city-selected', function (city) {
+                var latLng = new AMap.LngLat(city.lat, city.lng);
+                this.map.setZoom(11);
+                this.map.panTo(latLng);
             }.bind(this));
         },
         computed: {
             cafes() {
                 return this.$store.getters.getCafes;
+            },
+
+            city() {
+                return this.$store.getters.getCity;
+            },
+
+            cityFilter() {
+                return this.$store.getters.getCityFilter;
+            },
+
+            textSearch() {
+                return this.$store.getters.getTextSearch;
+            },
+
+            activeLocationFilter() {
+                return this.$store.getters.getActiveLocationFilter;
+            },
+
+            onlyLiked() {
+                return this.$store.getters.getOnlyLiked;
+            },
+
+            brewMethodsFilter() {
+                return this.$store.getters.getBrewMethodsFilter;
+            },
+
+            hasMatcha() {
+                return this.$store.getters.getHasMatcha;
+            },
+
+            hasTea() {
+                return this.$store.getters.getHasTea;
+            },
+
+            hasSubscription() {
+                return this.$store.getters.getHasSubscription;
+            },
+
+            previousLat() {
+                return this.$store.getters.getLat;
+            },
+
+            previousLng() {
+                return this.$store.getters.getLng;
+            },
+
+            previousZoom() {
+                return this.$store.getters.getZoomLevel;
             }
         },
         methods: {
@@ -130,28 +198,35 @@
                 this.markers = [];
 
                 // 自定义点标记
-                var image = ROAST_CONFIG.APP_URL + '/storage/img/coffee-marker.png';
+                /*var image = ROAST_CONFIG.APP_URL + '/storage/img/coffee-marker.png';
                 var icon = new AMap.Icon({
                     image: image,  // Icon的图像
                     imageSize: new AMap.Size(19, 33)
-                });
+                });*/
 
                 // 遍历所有咖啡店创建点标记
-                var infoWindow = new AMap.InfoWindow();
+                // var infoWindow = new AMap.InfoWindow();
                 for (var i = 0; i < this.cafes.length; i++) {
+
+                    if (this.cafes[i].company.roaster === 1) {
+                        var image = ROAST_CONFIG.APP_URL + '/storage/img/roaster-marker.svg';
+                    } else {
+                        var image = ROAST_CONFIG.APP_URL + '/storage/img/cafe-marker.svg';
+                    }
+                    var icon = new AMap.Icon({
+                        image: image,  // Icon的图像
+                        imageSize: new AMap.Size(19, 33)
+                    });
 
                     // 为每个咖啡店创建点标记并设置经纬度
                     var marker = new AMap.Marker({
                         position: new AMap.LngLat(parseFloat(this.cafes[i].latitude), parseFloat(this.cafes[i].longitude)),
                         title: this.cafes[i].location_name,
-                        icon: icon,
-                        extData: {
-                            'cafe': this.cafes[i]
-                        }
+                        icon: icon
                     });
 
                     // 自定义信息窗体
-                    var contentString = '<div class="cafe-info-window">' +
+                    /*var contentString = '<div class="cafe-info-window">' +
                         '<div class="cafe-name">' + this.cafes[i].name + this.cafes[i].location_name + '</div>' +
                         '<div class="cafe-address">' +
                         '<span class="street">' + this.cafes[i].address + '</span>' +
@@ -161,9 +236,10 @@
                         '<a href="/#/cafes/' + this.cafes[i].id + '">Visit</a>' +
                         '</div>' +
                         '</div>';
-                    marker.content = contentString;
+                    marker.content = contentString;*/
+                    marker.cafeId = this.cafes[i].id;
 
-                    // 绑定点击事件到点标记对象，点击打开上面创建的信息窗体
+                    // 绑定点击事件到点标记对象，点击跳转到咖啡店详情页
                     marker.on('click', mapClick);
 
                     // 将点标记放到数组中
@@ -171,8 +247,13 @@
                 }
 
                 function mapClick(mapEvent) {
-                    infoWindow.setContent(mapEvent.target.content);
-                    infoWindow.open(this.getMap(), this.getPosition());
+                    // infoWindow.setContent(mapEvent.target.content);
+                    // infoWindow.open(this.getMap(), this.getPosition());
+                    let center = this.getMap().getCenter();
+                    this.$store.dispatch('applyZoomLevel', this.getMap().getZoom());
+                    this.$store.dispatch('applyLat', center.getLat());
+                    this.$store.dispatch('applyLng', center.getLng());
+                    this.$router.push({name: 'cafe', params: {id: mapEvent.target.cafeId}});
                 }
 
                 // 将所有点标记显示到地图上
@@ -187,34 +268,73 @@
             },
             processFilters(filters) {
                 for (var i = 0; i < this.markers.length; i++) {
-                    if (filters.text === ''
-                        && filters.roaster === false
-                        && filters.brew_methods.length === 0) {
+                    if (this.textSearch === ''
+                        && this.activeLocationFilter === 'all'
+                        && this.brewMethodsFilter.length === 0
+                        && !this.onlyLiked
+                        && !this.hasMatcha
+                        && !this.hasTea
+                        && !this.hasSubscription
+                        && this.cityFilter === '') {
                         this.markers[i].setMap(this.map);
                     } else {
+                        // 初始化过滤器标识
                         var textPassed = false;
                         var brewMethodsPassed = false;
-                        var roasterPassed = false;
+                        var typePassed = false;
+                        var likedPassed = false;
+                        var matchaPassed = false;
+                        var teaPassed = false;
+                        var subscriptionPassed = false;
+                        var cityPassed = false;
 
-                        if (filters.roaster && this.processCafeIsRoasterFilter(this.markers[i].getExtData().cafe)) {
-                            roasterPassed = true;
-                        } else if (!filters.roaster) {
-                            roasterPassed = true;
+                        if (this.processCafeTypeFilter(this.markers[i].cafe, this.activeLocationFilter)) {
+                            typePassed = true;
                         }
 
-                        if (filters.text !== '' && this.processCafeTextFilter(this.markers[i].getExtData().cafe, filters.text)) {
+                        if (this.textSearch !== '' && this.processCafeTextFilter(this.markers[i].cafe, this.textSearch)) {
                             textPassed = true;
-                        } else if (filters.text === '') {
+                        } else if (this.textSearch === '') {
                             textPassed = true;
                         }
 
-                        if (filters.brew_methods.length !== 0 && this.processCafeBrewMethodsFilter(this.markers[i].getExtData().cafe, filters.brew_methods)) {
+                        if (this.brewMethodsFilter.length !== 0 && this.processCafeBrewMethodsFilter(this.markers[i].cafe, this.brewMethodsFilter)) {
                             brewMethodsPassed = true;
-                        } else if (filters.brew_methods.length === 0) {
+                        } else if (this.brewMethodsFilter.length === 0) {
                             brewMethodsPassed = true;
                         }
 
-                        if (roasterPassed && textPassed && brewMethodsPassed) {
+                        if (this.onlyLiked && this.processCafeUserLikeFilter(this.markers[i].cafe)) {
+                            likedPassed = true;
+                        } else if (!this.onlyLiked) {
+                            likedPassed = true;
+                        }
+
+                        if (this.hasMatcha && this.processCafeHasMatchaFilter(this.markers[i].cafe)) {
+                            matchaPassed = true;
+                        } else if (!this.hasMatcha) {
+                            matchaPassed = true;
+                        }
+
+                        if (this.hasTea && this.processCafeHasTeaFilter(this.markers[i].cafe)) {
+                            teaPassed = true;
+                        } else if (!this.hasTea) {
+                            teaPassed = true;
+                        }
+
+                        if (this.hasSubscription && this.processCafeSubscriptionFilter(this.markers[i].cafe)) {
+                            subscriptionPassed = true;
+                        } else if (!this.hasSubscription) {
+                            subscriptionPassed = true;
+                        }
+
+                        if (this.cityFilter !== '' && this.processCafeInCityFilter(this.markers[i].cafe, this.cityFilter)) {
+                            cityPassed = true;
+                        } else if (this.cityFilter === '') {
+                            cityPassed = true;
+                        }
+
+                        if (typePassed && textPassed && brewMethodsPassed && likedPassed && matchaPassed && teaPassed && subscriptionPassed && cityPassed) {
                             this.markers[i].setMap(this.map);
                         } else {
                             this.markers[i].setMap(null);
@@ -228,6 +348,50 @@
             cafes() {
                 this.clearMarkers();
                 this.buildMarkers();
+                this.processFilters();
+            },
+            // 如果路由从咖啡店详情页切换到咖啡店列表，检查之前的经纬度是否设置，
+            // 如果设置的话将其作为新绘制地图的定位点
+            '$route'(to, from) {
+                if (to.name === 'cafes' && from.name === 'cafe') {
+                    if (this.previousLat !== 0.0 && this.previousLng !== 0.0 && this.previousZoom !== '') {
+                        var latLng = new AMap.LngLat(this.previousLat, this.previousLng);
+                        this.map.setZoom(this.previousZoom);
+                        this.map.panTo(latLng);
+                    }
+                }
+            },
+
+            cityFilter() {
+                this.processFilters();
+            },
+
+            textSearch() {
+                this.processFilters();
+            },
+
+            activeLocationFilter() {
+                this.processFilters();
+            },
+
+            onlyLiked() {
+                this.processFilters();
+            },
+
+            brewMethodsFilter() {
+                this.processFilters();
+            },
+
+            hasMatcha() {
+                this.processFilters();
+            },
+
+            hasTea() {
+                this.processFilters();
+            },
+
+            hasSubscription() {
+                this.processFilters();
             }
         }
     }

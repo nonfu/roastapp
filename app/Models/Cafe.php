@@ -13,16 +13,10 @@ class Cafe extends Model
         return $this->belongsToMany(BrewMethod::class, 'cafes_brew_methods', 'cafe_id', 'brew_method_id');
     }
 
-    // 关联分店
-    public function children()
+    // 归属公司
+    public function company()
     {
-        return $this->hasMany(Cafe::class, 'parent', 'id');
-    }
-
-    // 归属总店
-    public function parent()
-    {
-        return $this->hasOne(Cafe::class, 'id', 'parent');
+        return $this->belongsTo(Company::class, 'company_id', 'id');
     }
 
     // 与 user 间的多对对关联
@@ -39,5 +33,11 @@ class Cafe extends Model
     public function tags()
     {
         return $this->belongsToMany(Tag::class, 'cafes_users_tags', 'cafe_id', 'tag_id');
+    }
+
+    // 咖啡店图片
+    public function photos()
+    {
+        return $this->hasMany(CafePhoto::class, 'id', 'cafe_id');
     }
 }

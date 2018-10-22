@@ -15,10 +15,24 @@
  * 2: Components
  */
 @import 'components/validations';
+@import 'components/labels';
+@import 'components/notification';
+@import 'components/pac-container';
+@import 'components/options';
+@import 'components/cafe-type';
 
 /**
  * 3: Layouts
  */
 @import 'layouts/page';
+
+/**
+ * 4: Animations
+ */
+@import 'animations/slide-in-left';
+@import 'animations/slide-in-right';
+@import 'animations/scale-in-center';
+@import 'animations/slide-out-back';
+@import 'animations/slide-in-top';
 
 @import 'node_modules/foundation-sites/assets/foundation.scss';

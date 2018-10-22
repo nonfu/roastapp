@@ -23,7 +23,7 @@ export default {
         return axios.post(ROAST_CONFIG.API_URL + '/cafes',
             {
                 name: name,
-                locations: locations,
+                locations: JSON.stringify(locations),
                 website: website,
                 description: description,
                 roaster: roaster,
