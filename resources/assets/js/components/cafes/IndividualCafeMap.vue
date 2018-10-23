@@ -16,8 +16,6 @@
 </template>
 
 <script>
-    import {ROAST_CONFIG} from '../../config.js';
-
     export default {
         computed: {
             cafeLoadStatus() {
@@ -46,7 +44,7 @@
                     zoom: 13
                 });
 
-                var image = ROAST_CONFIG.APP_URL + '/storage/img/coffee-marker.png';
+                var image = '/storage/img/coffee-marker.png';
                 var icon = new AMap.Icon({
                     image: image,  // Icon的图像
                     imageSize: new AMap.Size(19, 33)

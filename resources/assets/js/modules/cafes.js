@@ -65,7 +65,7 @@ export const cafes = {
             CafeAPI.getCafe(data.id)
                 .then(function (response) {
                     commit('setCafe', response.data);
-                    if (response.data.user_like.length > 0) {
+                    if (response.data.user_like_count > 0) {
                         commit('setCafeLikedStatus', true);
                     }
                     commit('setCafeLoadStatus', 2);
@@ -176,6 +176,11 @@ export const cafes = {
                 .catch(function () {
                     commit('setCafeUnlikeActionStatus', 3);
                 });
+        },
+
+        clearLikeAndUnlikeStatus({commit}, data) {
+            commit('setCafeLikeActionStatus', 0);
+            commit('setCafeUnlikeActionStatus', 0);
         },
 
         changeCafesView({commit, state, dispatch}, view) {

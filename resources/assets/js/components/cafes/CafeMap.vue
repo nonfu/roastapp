@@ -246,14 +246,17 @@
                     this.markers.push(marker);
                 }
 
+                let store = this.$store;
+                let router = this.$router;
+
                 function mapClick(mapEvent) {
                     // infoWindow.setContent(mapEvent.target.content);
                     // infoWindow.open(this.getMap(), this.getPosition());
-                    let center = this.getMap().getCenter();
-                    this.$store.dispatch('applyZoomLevel', this.getMap().getZoom());
-                    this.$store.dispatch('applyLat', center.getLat());
-                    this.$store.dispatch('applyLng', center.getLng());
-                    this.$router.push({name: 'cafe', params: {id: mapEvent.target.cafeId}});
+                    let center = mapEvent.target.getMap().getCenter();
+                    store.dispatch('applyZoomLevel', mapEvent.target.getMap().getZoom());
+                    store.dispatch('applyLat', center.getLat());
+                    store.dispatch('applyLng', center.getLng());
+                    router.push({name: 'cafe', params: {id: mapEvent.target.cafeId}});
                 }
 
                 // 将所有点标记显示到地图上
