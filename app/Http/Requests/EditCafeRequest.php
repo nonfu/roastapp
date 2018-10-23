@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreCafeRequest extends FormRequest
+class EditCafeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,23 +29,26 @@ class StoreCafeRequest extends FormRequest
             'city' => 'required',
             'state' => 'required',
             'zip' => 'required',
-            'website' => 'sometimes|url',
-            'tea' => 'boolean',
-            'matcha' => 'boolean'
+            'website' => 'sometimes|url'
         ];
     }
 
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
     public function messages()
     {
         return [
-            'company_name.required_without' => '咖啡店所属公司不能为空',
-            'address.required' => '咖啡店地址不能为空',
-            'city.required' => '咖啡店所在城市不能为空',
-            'state.required' => '咖啡店所在省份不能为空',
-            'zip.required' => '咖啡店邮编不能为空',
-            'zip.regex' => '无效的邮政编码',
-            'website.url' => '无效的咖啡店网址',
+            'company_name.required_without' => '咖啡店所属公司名称不能为空',
+            'address' => ['required' => '街道地址不能为空'],
+            'city' => ['required' => '城市字段不能为空'],
+            'state' => ['required' => '省份字段不能为空'],
+            'zip' => [
+                'required' => '邮编字段不能为空'
+            ],
+            'website.url' => '请输入有效的网址信息'
         ];
     }
-
 }

@@ -110,6 +110,31 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function () {
     */
     Route::post('/cafes', 'API\CafesController@postNewCafe');
 
+    /*
+    |-------------------------------------------------------------------------------
+    | Gets Editing Data for an Individual Cafe
+    |-------------------------------------------------------------------------------
+    | URL:            /api/v1/cafes/{slug}/edit
+    | Controller:     API\CafesController@getCafeEditData
+    | Method:         GET
+    | Description:    Gets an individual cafe's edit data
+    */
+    Route::get('/cafes/{id}/edit', 'API\CafesController@getCafeEditData');
+
+    /*
+    |-------------------------------------------------------------------------------
+    | Edits a Cafe
+    |-------------------------------------------------------------------------------
+    | URL:            /api/v1/cafes/{slug}
+    | Controller:     API\CafesController@putEditCafe
+    | Method:         PUT
+    | Description:    Edits a cafe
+    */
+    Route::put('/cafes/{id}', 'API\CafesController@putEditCafe');
+
+
+
+    // 喜欢/取消喜欢咖啡店
     Route::post('/cafes/{id}/like', 'API\CafesController@postLikeCafe');
     Route::delete('/cafes/{id}/like', 'API\CafesController@deleteLikeCafe');
 
@@ -145,4 +170,15 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function () {
     | 功能描述:     更新认证用户的个人信息
     */
     Route::put('/user', 'API\UsersController@putUpdateUser');
+
+    /*
+    |-------------------------------------------------------------------------------
+    | Deletes A Cafe
+    |-------------------------------------------------------------------------------
+    | URL:            /api/v1/cafes/{slug}
+    | Controller:     API\CafesController@deleteCafe
+    | Method:         DELETE
+    | Description:    Deletes a cafe
+    */
+    Route::delete('/cafes/{id}', 'API\CafesController@deleteCafe');
 });

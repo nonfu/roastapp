@@ -4,9 +4,12 @@ namespace App\Models;
 
 use App\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Cafe extends Model
 {
+    use SoftDeletes;
+
     // 定义与 BrewMethod 模型间的多对多关联
     public function brewMethods()
     {

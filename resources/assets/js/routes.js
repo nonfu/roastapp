@@ -77,9 +77,15 @@ export default new VueRouter({
                         {
                             path: 'cities/:slug',
                             name: 'city',
-                            component: Vue.component( 'City', require( './pages/City.vue' ))
+                            component: Vue.component('City', require('./pages/City.vue'))
                         }
                     ]
+                },
+                {
+                    path: 'cafes/:id/edit',
+                    name: 'editcafe',
+                    component: Vue.component('EditCafe', require('./pages/EditCafe.vue')),
+                    beforeEnter: requireAuth
                 },
                 {
                     path: 'profile',

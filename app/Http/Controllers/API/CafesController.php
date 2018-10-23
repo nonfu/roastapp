@@ -3,6 +3,7 @@
 namespace app\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\EditCafeRequest;
 use App\Http\Requests\StoreCafeRequest;
 use App\Models\Cafe;
 use App\Models\CafePhoto;
@@ -85,6 +86,42 @@ class CafesController extends Controller
             ->first();
 
         return response()->json($company, 201);
+    }
+
+    // 获取咖啡店编辑表单数据
+    public function getCafeEditData($id)
+    {
+        $cafe = Cafe::where('id', '=', $id)
+            ->with('brewMethods')
+            ->withCount('userLike')
+            ->with(['company' => function ($query) {
+                $query->withCount('cafes');
+            }])
+            ->first();
+        return response()->json($cafe);
+    }
+
+    // 更新咖啡店数据
+    public function putEditCafe($id, EditCafeRequest $request)
+    {
+        $cafe = Cafe::where('id', '=', $id)->with('brewMethods')->first();
+
+        $cafeService = new CafeService();
+        $updatedCafe = $cafeService->editCafe($cafe->id, $request->all(), Auth::user()->id);
+
+        $company = Company::where('id', '=', $updatedCafe->company_id)
+            ->with('cafes')
+            ->first();
+
+        return response()->json($company, 200);
+    }
+
+    // 删除咖啡店
+    public function deleteCafe($id)
+    {
+        $cafe = Cafe::where('id', '=', $id)->first();
+        $cafe->delete();
+        return response()->json(['message' => '删除成功'], 204);
     }
 
     public function postLikeCafe($cafeID)
