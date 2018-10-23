@@ -8,9 +8,6 @@ use App\Http\Controllers\Controller;
 
 class CompaniesController extends Controller
 {
-    /**
-     * Searches for a specific company in the database.
-     */
     public function getCompanySearch(Request $request)
     {
         $term = $request->input('search');

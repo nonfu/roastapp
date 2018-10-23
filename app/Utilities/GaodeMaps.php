@@ -2,6 +2,7 @@
 
 namespace App\Utilities;
 
+use App\Models\City;
 use GuzzleHttp\Client;
 
 class GaodeMaps
@@ -45,5 +46,58 @@ class GaodeMaps
 
         // 返回地理编码位置数据
         return $coordinates;
+    }
+
+    /**
+     * 通过经纬度反查距离最近的城市
+     * @param $name
+     * @param $latitude
+     * @param $longitude
+     * @return int|null
+     */
+    public static function findClosestCity($name, $latitude, $longitude)
+    {
+        $cities = City::where('name', 'LIKE', $name . '%')->get();
+
+        // 检查距离信息
+        if ($cities && count($cities) == 1) {
+            return $cities[0]->id;
+        } else {
+            $apiKey = config('services.gaode.ws_api_key'); // WebService API Key
+            $location = $latitude . ',' . $longitude;
+            $url = 'https://restapi.amap.com/v3/geocode/regeo?location=' . $location . '&key=' . $apiKey;
+            // 创建 Guzzle HTTP 客户端发起请求
+            $client = new Client();
+
+            // 发送请求并获取响应数据
+            $regeocodeResponse = $client->get($url)->getBody();
+            $regeocodeData = json_decode($regeocodeResponse);
+            if (empty($regeocodeData) || $regeocodeData->status == 0) {
+                return null;
+            }
+
+            if ($cities) {
+                foreach ($cities as $city) {
+                    if ($city->name == $regeocodeData->regeocode->addressComponent->city) {
+                        return $city->id;
+                    }
+                }
+            }
+
+            $city = new City();
+            // 直辖市city字段为空数组
+            if (!$regeocodeData->regeocode->addressComponent->city) {
+                $city->name = $regeocodeData->regeocode->addressComponent->province;
+            } else {
+                $city->name = $regeocodeData->regeocode->addressComponent->city;
+            }
+            $city->slug = $city->name;
+            $city->state = $regeocodeData->regeocode->addressComponent->province;
+            $city->country = $regeocodeData->regeocode->addressComponent->country;
+            $city->save();
+
+            return $city->id;
+        }
+
     }
 }

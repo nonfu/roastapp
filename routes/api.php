@@ -83,6 +83,17 @@ Route::group(['prefix' => 'v1'], function () {
     | Description:    Gets an individual city
     */
     Route::get('/cities/{slug}', 'API\CitiesController@getCity');
+
+    /*
+    |-------------------------------------------------------------------------------
+    | Handles a Company Search
+    |-------------------------------------------------------------------------------
+    | URL:            /api/v1/companies/search
+    | Controller:     API\CompaniesController@getCompanySearch
+    | Method:         GET
+    | Description:    Handles a search for a company.
+    */
+    Route::get('/companies/search', 'API\CompaniesController@getCompanySearch');
 });
 
 // 私有路由，需要登录才能访问

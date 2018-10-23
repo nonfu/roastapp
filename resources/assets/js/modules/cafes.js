@@ -74,13 +74,21 @@ export const cafes = {
         addCafe({commit, state, dispatch}, data) {
             commit('setCafeAddStatus', 1);
 
-            CafeAPI.postAddNewCafe(data.name, data.locations, data.website, data.description, data.roaster, data.picture)
+            CafeAPI.postAddNewCafe(data.company_name, data.company_id, data.company_type, data.subscription, data.website, data.location_name, data.address, data.city, data.state, data.zip, data.brew_methods, data.matcha, data.tea)
                 .then(function (response) {
-                    commit('setCafeAddedStatus', 2);
+                    if (typeof response.data.cafe_add_pending !== 'undefined') {
+                        commit('setCafeAddedText', response.data.cafe_add_pending + ' 正在添加中!');
+                    } else {
+                        commit('setCafeAddedText', response.data.name + ' 已经添加!');
+                    }
+
+                    commit('setCafeAddStatus', 2);
+                    commit('setCafeAdded', response.data);
+
                     dispatch('loadCafes');
                 })
                 .catch(function () {
-                    commit('setCafeAddedStatus', 3);
+                    commit('setCafeAddStatus', 3);
                 });
         },
 
@@ -165,11 +173,11 @@ export const cafes = {
             state.cafeAddStatus = status;
         },
 
-        setCafeAdded( state, cafe ){
+        setCafeAdded(state, cafe) {
             state.cafeAdded = cafe;
         },
 
-        setCafeAddedText( state, text ){
+        setCafeAddedText(state, text) {
             state.cafeAddText = text;
         },
 
@@ -213,11 +221,11 @@ export const cafes = {
             return state.cafeAddStatus;
         },
 
-        getAddedCafe( state ){
+        getAddedCafe(state) {
             return state.cafeAdded;
         },
 
-        getCafeAddText( state ){
+        getCafeAddText(state) {
             return state.cafeAddText;
         },
 

@@ -22,8 +22,8 @@ Route::get( '/auth/{social}/callback', 'Web\AuthenticationController@getSocialCa
 Route::get( '/logout', 'Web\AppController@getLogout' )
     ->name('logout');
 
-Route::get('geocode', function () {
-    return \App\Utilities\GaodeMaps::geocodeAddress('天城路1号', '杭州', '浙江');
+Route::get('regeocode', function () {
+    return \App\Utilities\GaodeMaps::findClosestCity('上海', 121.49974000, 31.23985300);
 });
 
 Route::get('/cafe/{id}', 'API\CafesController@getCafe');

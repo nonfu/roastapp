@@ -26,7 +26,7 @@ function requireAuth(to, from, next) {
             if (store.getters.getUser != '') {
                 next();
             } else {
-                next('/home');
+                next('/');
             }
         }
     }

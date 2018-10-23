@@ -8,30 +8,12 @@ use App\Http\Controllers\Controller;
 
 class CitiesController extends Controller
 {
-    /*
-  |-------------------------------------------------------------------------------
-  | Gets All Cities
-  |-------------------------------------------------------------------------------
-  | URL:            /api/v1/cities
-  | Controller:     API\CitiesController@getCities
-  | Method:         GET
-  | Description:    Get all cities
-  */
     public function getCities()
     {
         $cities = City::all();
         return response()->json($cities);
     }
 
-    /*
-    |-------------------------------------------------------------------------------
-    | Gets An Individual City
-    |-------------------------------------------------------------------------------
-    | URL:            /api/v1/cities/{slug}
-    | Controller:     API\CitiesController@getCity
-    | Method:         GET
-    | Description:    Gets an individual city
-    */
     public function getCity($slug)
     {
         $city = City::where('slug', '=', $slug)
