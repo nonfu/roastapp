@@ -39,9 +39,9 @@ class GaodeMaps
             && $geocodeData->status  // 0 表示失败，1 表示成功
             && isset($geocodeData->geocodes)
             && isset($geocodeData->geocodes[0])) {
-            list($latitude, $longitude) = explode(',', $geocodeData->geocodes[0]->location);
-            $coordinates['lat'] = $latitude;  // 经度
-            $coordinates['lng'] = $longitude; // 纬度
+            list($longitude, $latitude) = explode(',', $geocodeData->geocodes[0]->location);
+            $coordinates['lat'] = $latitude;  // 纬度s
+            $coordinates['lng'] = $longitude; // 经度
         }
 
         // 返回地理编码位置数据
@@ -94,6 +94,17 @@ class GaodeMaps
             $city->slug = $city->name;
             $city->state = $regeocodeData->regeocode->addressComponent->province;
             $city->country = $regeocodeData->regeocode->addressComponent->country;
+
+            // 获取城市经纬度
+            $url = 'https://restapi.amap.com/v3/config/district?keywords=' . $city->name . '&key=' . $apiKey;
+            $districtResponse = $client->get($url)->getBody();
+            $districtData = json_decode($districtResponse);
+            if (!empty($districtData) && $districtData->status == 1) {
+                list($lng, $lat) = explode(',', $districtData->districts[0]->center);
+                $city->latitude = $lat;
+                $city->longitude = $lng;
+            }
+
             $city->save();
 
             return $city->id;

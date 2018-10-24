@@ -55907,7 +55907,7 @@ function requireAuth(to, from, next) {
                 name: 'cafe',
                 component: __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('Cafe', __webpack_require__(148))
             }, {
-                path: 'cities/:slug',
+                path: 'cities/:id',
                 name: 'city',
                 component: __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('City', __webpack_require__(167))
             }]
@@ -61817,9 +61817,9 @@ var cities = {
       commit('setCityLoadStatus', 1);
 
       /*
-        Calls the API to load an individual city by slug.
+        Calls the API to load an individual city by id.
       */
-      __WEBPACK_IMPORTED_MODULE_0__api_cities_js__["a" /* default */].getCity(data.slug).then(function (response) {
+      __WEBPACK_IMPORTED_MODULE_0__api_cities_js__["a" /* default */].getCity(data.id).then(function (response) {
         commit('setCity', response.data);
         commit('setCityLoadStatus', 2);
       }).catch(function () {
@@ -61918,8 +61918,8 @@ var cities = {
   /*
     GET   /api/v1/cities/{slug}
   */
-  getCity: function getCity(slug) {
-    return axios.get(__WEBPACK_IMPORTED_MODULE_0__config_js__["a" /* ROAST_CONFIG */].API_URL + '/cities/' + slug);
+  getCity: function getCity(id) {
+    return axios.get(__WEBPACK_IMPORTED_MODULE_0__config_js__["a" /* ROAST_CONFIG */].API_URL + '/cities/' + id);
   }
 });
 
@@ -63803,18 +63803,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     watch: {
         'cityFilter': function cityFilter() {
-            if (this.cityFilter != '') {
-                var slug = '';
+            if (this.cityFilter !== '') {
+                var id = '';
 
                 for (var i = 0; i < this.cities.length; i++) {
                     if (this.cities[i].id === this.cityFilter) {
-                        slug = this.cities[i].slug;
+                        id = this.cities[i].id;
                     }
                 }
-                if (slug == '') {
+                if (id === '') {
                     this.$router.push({ name: 'cafes' });
                 } else {
-                    this.$router.push({ name: 'city', params: { slug: slug } });
+                    this.$router.push({ name: 'city', params: { id: id } });
                 }
             } else {
                 this.$router.push({ name: 'cafes' });
@@ -63824,7 +63824,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (this.citiesLoadStatus === 2 && this.$route.name === 'city') {
                 var id = '';
                 for (var i = 0; i < this.cities.length; i++) {
-                    if (this.cities[i].slug === this.$route.params.slug) {
+                    if (this.cities[i].id === this.$route.params.id) {
                         this.cityFilter = this.cities[i].id;
                     }
                 }
@@ -65293,13 +65293,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         'latitude': {
             type: Number,
             default: function _default() {
-                return 120.21;
+                return 30.29;
             }
         },
         'longitude': {
             type: Number,
             default: function _default() {
-                return 30.29;
+                return 120.21;
             }
         },
         'zoom': {
@@ -65318,7 +65318,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     mounted: function mounted() {
         this.markers = [];
         this.map = new AMap.Map('cafe-map', {
-            center: [this.latitude, this.longitude],
+            center: [this.longitude, this.latitude],
             zoom: this.zoom
         });
         this.clearMarkers();
@@ -65326,14 +65326,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         // 监听位置选择事件
         __WEBPACK_IMPORTED_MODULE_1__event_bus_js__["a" /* EventBus */].$on('location-selected', function (cafe) {
-            var latLng = new AMap.LngLat(cafe.lat, cafe.lng);
+            var latLng = new AMap.LngLat(cafe.lng, cafe.lat);
             this.map.setZoom(17);
             this.map.panTo(latLng);
         }.bind(this));
 
         // 监听城市选择事件
         __WEBPACK_IMPORTED_MODULE_1__event_bus_js__["a" /* EventBus */].$on('city-selected', function (city) {
-            var latLng = new AMap.LngLat(city.lat, city.lng);
+            var latLng = new AMap.LngLat(city.lng, city.lat);
             this.map.setZoom(11);
             this.map.panTo(latLng);
         }.bind(this));
@@ -65409,9 +65409,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
                 // 为每个咖啡店创建点标记并设置经纬度
                 var marker = new AMap.Marker({
-                    position: new AMap.LngLat(parseFloat(this.cafes[i].latitude), parseFloat(this.cafes[i].longitude)),
+                    position: new AMap.LngLat(parseFloat(this.cafes[i].longitude), parseFloat(this.cafes[i].latitude)),
                     title: this.cafes[i].location_name,
-                    icon: icon
+                    icon: icon,
+                    extData: {
+                        'cafe': this.cafes[i]
+                    }
                 });
 
                 // 自定义信息窗体
@@ -65474,47 +65477,47 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     var subscriptionPassed = false;
                     var cityPassed = false;
 
-                    if (this.processCafeTypeFilter(this.markers[i].cafe, this.activeLocationFilter)) {
+                    if (this.processCafeTypeFilter(this.markers[i].getExtData().cafe, this.activeLocationFilter)) {
                         typePassed = true;
                     }
 
-                    if (this.textSearch !== '' && this.processCafeTextFilter(this.markers[i].cafe, this.textSearch)) {
+                    if (this.textSearch !== '' && this.processCafeTextFilter(this.markers[i].getExtData().cafe, this.textSearch)) {
                         textPassed = true;
                     } else if (this.textSearch === '') {
                         textPassed = true;
                     }
 
-                    if (this.brewMethodsFilter.length !== 0 && this.processCafeBrewMethodsFilter(this.markers[i].cafe, this.brewMethodsFilter)) {
+                    if (this.brewMethodsFilter.length !== 0 && this.processCafeBrewMethodsFilter(this.markers[i].getExtData().cafe, this.brewMethodsFilter)) {
                         brewMethodsPassed = true;
                     } else if (this.brewMethodsFilter.length === 0) {
                         brewMethodsPassed = true;
                     }
 
-                    if (this.onlyLiked && this.processCafeUserLikeFilter(this.markers[i].cafe)) {
+                    if (this.onlyLiked && this.processCafeUserLikeFilter(this.markers[i].getExtData().cafe)) {
                         likedPassed = true;
                     } else if (!this.onlyLiked) {
                         likedPassed = true;
                     }
 
-                    if (this.hasMatcha && this.processCafeHasMatchaFilter(this.markers[i].cafe)) {
+                    if (this.hasMatcha && this.processCafeHasMatchaFilter(this.markers[i].getExtData().cafe)) {
                         matchaPassed = true;
                     } else if (!this.hasMatcha) {
                         matchaPassed = true;
                     }
 
-                    if (this.hasTea && this.processCafeHasTeaFilter(this.markers[i].cafe)) {
+                    if (this.hasTea && this.processCafeHasTeaFilter(this.markers[i].getExtData().cafe)) {
                         teaPassed = true;
                     } else if (!this.hasTea) {
                         teaPassed = true;
                     }
 
-                    if (this.hasSubscription && this.processCafeSubscriptionFilter(this.markers[i].cafe)) {
+                    if (this.hasSubscription && this.processCafeSubscriptionFilter(this.markers[i].getExtData().cafe)) {
                         subscriptionPassed = true;
                     } else if (!this.hasSubscription) {
                         subscriptionPassed = true;
                     }
 
-                    if (this.cityFilter !== '' && this.processCafeInCityFilter(this.markers[i].cafe, this.cityFilter)) {
+                    if (this.cityFilter !== '' && this.processCafeInCityFilter(this.markers[i].getExtData().cafe, this.cityFilter)) {
                         cityPassed = true;
                     } else if (this.cityFilter === '') {
                         cityPassed = true;
@@ -65542,7 +65545,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         '$route': function $route(to, from) {
             if (to.name === 'cafes' && from.name === 'cafe') {
                 if (this.previousLat !== 0.0 && this.previousLng !== 0.0 && this.previousZoom !== '') {
-                    var latLng = new AMap.LngLat(this.previousLat, this.previousLng);
+                    var latLng = new AMap.LngLat(this.previousLng, this.previousLat);
                     this.map.setZoom(this.previousZoom);
                     this.map.panTo(latLng);
                 }
@@ -66630,18 +66633,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         'cityFilter': function cityFilter() {
 
-            if (this.cityFilter != '') {
-                var slug = '';
+            if (this.cityFilter !== '') {
+                var id = '';
 
                 for (var i = 0; i < this.cities.length; i++) {
                     if (this.cities[i].id === this.cityFilter) {
-                        slug = this.cities[i].slug;
+                        id = this.cities[i].id;
                     }
                 }
-                if (slug == '') {
+                if (id === '') {
                     this.$router.push({ name: 'cafes' });
                 } else {
-                    this.$router.push({ name: 'city', params: { slug: slug } });
+                    this.$router.push({ name: 'city', params: { id: id } });
                 }
             } else {
                 this.$router.push({ name: 'cafes' });
@@ -66653,7 +66656,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (this.citiesLoadStatus === 2 && this.$route.name === 'city') {
                 var id = '';
                 for (var i = 0; i < this.cities.length; i++) {
-                    if (this.cities[i].slug === this.$route.params.slug) {
+                    if (this.cities[i].id === this.$route.params.id) {
                         this.cityFilter = this.cities[i].id;
                     }
                 }
@@ -70393,7 +70396,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         displayIndividualCafeMap: function displayIndividualCafeMap() {
 
             this.map = new AMap.Map('individual-cafe-map', {
-                center: [parseFloat(this.cafe.latitude), parseFloat(this.cafe.longitude)],
+                center: [parseFloat(this.cafe.longitude), parseFloat(this.cafe.latitude)],
                 zoom: 13
             });
 
@@ -70404,7 +70407,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
 
             var marker = new AMap.Marker({
-                position: new AMap.LngLat(parseFloat(this.cafe.latitude), parseFloat(this.cafe.longitude)),
+                position: new AMap.LngLat(parseFloat(this.cafe.longitude), parseFloat(this.cafe.latitude)),
                 icon: icon
             });
 
@@ -71119,7 +71122,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     */
     created: function created() {
         this.$store.dispatch('loadCity', {
-            slug: this.$route.params.slug
+            id: this.$route.params.id
         });
     },
 
@@ -71148,10 +71151,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         /*
           When the city changes, load the city.
         */
-        '$route.params.slug': function $routeParamsSlug() {
+        '$route.params.id': function $routeParamsId() {
             if (this.$route.name === 'city') {
                 this.$store.dispatch('loadCity', {
-                    slug: this.$route.params.slug
+                    id: this.$route.params.id
                 });
             }
         },

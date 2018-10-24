@@ -93,13 +93,13 @@
             'latitude': {
                 type: Number,
                 default: function () {
-                    return 120.21
+                    return 30.29
                 }
             },
             'longitude': {
                 type: Number,
                 default: function () {
-                    return 30.29
+                    return 120.21
                 }
             },
             'zoom': {
@@ -118,7 +118,7 @@
         mounted() {
             this.markers = [];
             this.map = new AMap.Map('cafe-map', {
-                center: [this.latitude, this.longitude],
+                center: [this.longitude, this.latitude],
                 zoom: this.zoom
             });
             this.clearMarkers();
@@ -126,14 +126,14 @@
 
             // 监听位置选择事件
             EventBus.$on('location-selected', function (cafe) {
-                var latLng = new AMap.LngLat(cafe.lat, cafe.lng);
+                var latLng = new AMap.LngLat(cafe.lng, cafe.lat);
                 this.map.setZoom(17);
                 this.map.panTo(latLng);
             }.bind(this));
 
             // 监听城市选择事件
             EventBus.$on('city-selected', function (city) {
-                var latLng = new AMap.LngLat(city.lat, city.lng);
+                var latLng = new AMap.LngLat(city.lng, city.lat);
                 this.map.setZoom(11);
                 this.map.panTo(latLng);
             }.bind(this));
@@ -220,9 +220,12 @@
 
                     // 为每个咖啡店创建点标记并设置经纬度
                     var marker = new AMap.Marker({
-                        position: new AMap.LngLat(parseFloat(this.cafes[i].latitude), parseFloat(this.cafes[i].longitude)),
+                        position: new AMap.LngLat(parseFloat(this.cafes[i].longitude), parseFloat(this.cafes[i].latitude)),
                         title: this.cafes[i].location_name,
-                        icon: icon
+                        icon: icon,
+                        extData: {
+                            'cafe': this.cafes[i]
+                        }
                     });
 
                     // 自定义信息窗体
@@ -291,47 +294,47 @@
                         var subscriptionPassed = false;
                         var cityPassed = false;
 
-                        if (this.processCafeTypeFilter(this.markers[i].cafe, this.activeLocationFilter)) {
+                        if (this.processCafeTypeFilter(this.markers[i].getExtData().cafe, this.activeLocationFilter)) {
                             typePassed = true;
                         }
 
-                        if (this.textSearch !== '' && this.processCafeTextFilter(this.markers[i].cafe, this.textSearch)) {
+                        if (this.textSearch !== '' && this.processCafeTextFilter(this.markers[i].getExtData().cafe, this.textSearch)) {
                             textPassed = true;
                         } else if (this.textSearch === '') {
                             textPassed = true;
                         }
 
-                        if (this.brewMethodsFilter.length !== 0 && this.processCafeBrewMethodsFilter(this.markers[i].cafe, this.brewMethodsFilter)) {
+                        if (this.brewMethodsFilter.length !== 0 && this.processCafeBrewMethodsFilter(this.markers[i].getExtData().cafe, this.brewMethodsFilter)) {
                             brewMethodsPassed = true;
                         } else if (this.brewMethodsFilter.length === 0) {
                             brewMethodsPassed = true;
                         }
 
-                        if (this.onlyLiked && this.processCafeUserLikeFilter(this.markers[i].cafe)) {
+                        if (this.onlyLiked && this.processCafeUserLikeFilter(this.markers[i].getExtData().cafe)) {
                             likedPassed = true;
                         } else if (!this.onlyLiked) {
                             likedPassed = true;
                         }
 
-                        if (this.hasMatcha && this.processCafeHasMatchaFilter(this.markers[i].cafe)) {
+                        if (this.hasMatcha && this.processCafeHasMatchaFilter(this.markers[i].getExtData().cafe)) {
                             matchaPassed = true;
                         } else if (!this.hasMatcha) {
                             matchaPassed = true;
                         }
 
-                        if (this.hasTea && this.processCafeHasTeaFilter(this.markers[i].cafe)) {
+                        if (this.hasTea && this.processCafeHasTeaFilter(this.markers[i].getExtData().cafe)) {
                             teaPassed = true;
                         } else if (!this.hasTea) {
                             teaPassed = true;
                         }
 
-                        if (this.hasSubscription && this.processCafeSubscriptionFilter(this.markers[i].cafe)) {
+                        if (this.hasSubscription && this.processCafeSubscriptionFilter(this.markers[i].getExtData().cafe)) {
                             subscriptionPassed = true;
                         } else if (!this.hasSubscription) {
                             subscriptionPassed = true;
                         }
 
-                        if (this.cityFilter !== '' && this.processCafeInCityFilter(this.markers[i].cafe, this.cityFilter)) {
+                        if (this.cityFilter !== '' && this.processCafeInCityFilter(this.markers[i].getExtData().cafe, this.cityFilter)) {
                             cityPassed = true;
                         } else if (this.cityFilter === '') {
                             cityPassed = true;
@@ -358,7 +361,7 @@
             '$route'(to, from) {
                 if (to.name === 'cafes' && from.name === 'cafe') {
                     if (this.previousLat !== 0.0 && this.previousLng !== 0.0 && this.previousZoom !== '') {
-                        var latLng = new AMap.LngLat(this.previousLat, this.previousLng);
+                        var latLng = new AMap.LngLat(this.previousLng, this.previousLat);
                         this.map.setZoom(this.previousZoom);
                         this.map.panTo(latLng);
                     }

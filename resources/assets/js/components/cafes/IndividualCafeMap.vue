@@ -40,7 +40,7 @@
             displayIndividualCafeMap() {
 
                 this.map = new AMap.Map('individual-cafe-map', {
-                    center: [parseFloat(this.cafe.latitude), parseFloat(this.cafe.longitude)],
+                    center: [parseFloat(this.cafe.longitude), parseFloat(this.cafe.latitude)],
                     zoom: 13
                 });
 
@@ -51,7 +51,7 @@
                 });
 
                 var marker = new AMap.Marker({
-                    position: new AMap.LngLat(parseFloat(this.cafe.latitude), parseFloat(this.cafe.longitude)),
+                    position: new AMap.LngLat(parseFloat(this.cafe.longitude), parseFloat(this.cafe.latitude)),
                     icon: icon
                 });
 

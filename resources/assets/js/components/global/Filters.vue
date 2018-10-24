@@ -292,7 +292,7 @@
         },
         watch: {
             'cityFilter': function () {
-                if (this.cityFilter != '') {
+                if (this.cityFilter !== '') {
                     let id = '';
 
                     for (let i = 0; i < this.cities.length; i++) {
