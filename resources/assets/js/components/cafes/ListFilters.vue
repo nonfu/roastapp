@@ -304,18 +304,18 @@
 
             'cityFilter': function () {
 
-                if (this.cityFilter != '') {
-                    let slug = '';
+                if (this.cityFilter !== '') {
+                    let id = '';
 
                     for (let i = 0; i < this.cities.length; i++) {
                         if (this.cities[i].id === this.cityFilter) {
-                            slug = this.cities[i].slug;
+                            id = this.cities[i].id;
                         }
                     }
-                    if (slug == '') {
+                    if (id === '') {
                         this.$router.push({name: 'cafes'});
                     } else {
-                        this.$router.push({name: 'city', params: {slug: slug}});
+                        this.$router.push({name: 'city', params: {id: id}});
                     }
                 } else {
                     this.$router.push({name: 'cafes'});
@@ -327,7 +327,7 @@
                 if (this.citiesLoadStatus === 2 && this.$route.name === 'city') {
                     let id = '';
                     for (let i = 0; i < this.cities.length; i++) {
-                        if (this.cities[i].slug === this.$route.params.slug) {
+                        if (this.cities[i].id === this.$route.params.id) {
                             this.cityFilter = this.cities[i].id;
                         }
                     }

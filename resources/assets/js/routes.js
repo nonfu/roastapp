@@ -75,7 +75,7 @@ export default new VueRouter({
                             component: Vue.component('Cafe', require('./pages/Cafe.vue'))
                         },
                         {
-                            path: 'cities/:slug',
+                            path: 'cities/:id',
                             name: 'city',
                             component: Vue.component('City', require('./pages/City.vue'))
                         }

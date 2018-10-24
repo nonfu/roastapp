@@ -14,9 +14,9 @@ class CitiesController extends Controller
         return response()->json($cities);
     }
 
-    public function getCity($slug)
+    public function getCity($id)
     {
-        $city = City::where('slug', '=', $slug)
+        $city = City::where('id', '=', $id)
             ->with(['cafes' => function ($query) {
                 $query->with('company');
             }])
