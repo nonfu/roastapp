@@ -82,7 +82,7 @@ export const cafes = {
             CafeAPI.postAddNewCafe(data.company_name, data.company_id, data.company_type, data.subscription, data.website, data.location_name, data.address, data.city, data.state, data.zip, data.brew_methods, data.matcha, data.tea)
                 .then(function (response) {
                     if (typeof response.data.cafe_add_pending !== 'undefined') {
-                        commit('setCafeAddedText', response.data.cafe_add_pending + ' 正在添加中!');
+                        commit('setCafeAddedText', response.data.cafe_add_pending + ' 审核通过才能添加!');
                     } else {
                         commit('setCafeAddedText', response.data.name + ' 已经添加!');
                     }
@@ -117,7 +117,7 @@ export const cafes = {
             CafeAPI.putEditCafe(data.id, data.company_name, data.company_id, data.company_type, data.subscription, data.website, data.location_name, data.address, data.city, data.state, data.zip, data.brew_methods, data.matcha, data.tea)
                 .then(function (response) {
                     if (typeof response.data.cafe_updates_pending !== 'undefined') {
-                        commit('setCafeEditText', response.data.cafe_updates_pending + ' 正在编辑中!');
+                        commit('setCafeEditText', response.data.cafe_updates_pending + ' 审核通过才能更新!');
                     } else {
                         commit('setCafeEditText', response.data.name + ' 已经编辑成功!');
                     }
@@ -138,7 +138,7 @@ export const cafes = {
                 .then(function (response) {
 
                     if (typeof response.data.cafe_delete_pending !== 'undefined') {
-                        commit('setCafeDeletedText', response.data.cafe_delete_pending + ' 正在删除中!');
+                        commit('setCafeDeletedText', response.data.cafe_delete_pending + ' 审核通过才能删除!');
                     } else {
                         commit('setCafeDeletedText', '咖啡店删除成功!');
                     }

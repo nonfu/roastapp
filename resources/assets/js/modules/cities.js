@@ -25,41 +25,45 @@ export const cities = {
     /*
       Loads all cities.
     */
-    loadCities( { commit } ){
+    loadCities({
+      commit
+    }) {
       commit('setCitiesLoadStatus', 1);
 
       /*
         Calls the API to load the cities
       */
       CitiesAPI.getCities()
-               .then( function( response ){
-                 commit( 'setCities', response.data );
-                 commit( 'setCitiesLoadStatus', 2 );
-               })
-               .catch( function(){
-                 commit( 'setCities', [] );
-                 commit( 'setCitiesLoadStatus', 3 );
-               });
+        .then(function (response) {
+          commit('setCities', response.data);
+          commit('setCitiesLoadStatus', 2);
+        })
+        .catch(function () {
+          commit('setCities', []);
+          commit('setCitiesLoadStatus', 3);
+        });
     },
 
     /*
       Loads an individual city.
     */
-    loadCity( { commit }, data ){
-      commit( 'setCityLoadStatus', 1 );
+    loadCity({
+      commit
+    }, data) {
+      commit('setCityLoadStatus', 1);
 
       /*
         Calls the API to load an individual city by id.
       */
-      CitiesAPI.getCity( data.id )
-               .then( function( response ){
-                 commit( 'setCity', response.data );
-                 commit( 'setCityLoadStatus', 2 );
-               })
-               .catch( function(){
-                 commit( 'setCity', {} );
-                 commit( 'setCityLoadStatus', 3 );
-               });
+      CitiesAPI.getCity(data.id)
+        .then(function (response) {
+          commit('setCity', response.data);
+          commit('setCityLoadStatus', 2);
+        })
+        .catch(function () {
+          commit('setCity', {});
+          commit('setCityLoadStatus', 3);
+        });
     }
   },
 
@@ -70,28 +74,28 @@ export const cities = {
     /*
       Sets the cities in the state.
     */
-    setCities( state, cities ){
+    setCities(state, cities) {
       state.cities = cities;
     },
 
     /*
       Sets the cities load status.
     */
-    setCitiesLoadStatus( state, status ){
+    setCitiesLoadStatus(state, status) {
       state.citiesLoadStatus = status;
     },
 
     /*
       Sets the city
     */
-    setCity( state, city ){
+    setCity(state, city) {
       state.city = city;
     },
 
     /*
       Sets the city load status.
     */
-    setCityLoadStatus( state, status ){
+    setCityLoadStatus(state, status) {
       state.cityLoadStatus = status;
     }
   },
@@ -103,28 +107,28 @@ export const cities = {
     /*
       Gets the cities
     */
-    getCities( state ){
+    getCities(state) {
       return state.cities;
     },
 
     /*
       Gets the cities load status.
     */
-    getCitiesLoadStatus( state ){
+    getCitiesLoadStatus(state) {
       return state.citiesLoadStatus;
     },
 
     /*
       Get the city
     */
-    getCity( state ){
+    getCity(state) {
       return state.city;
     },
 
     /*
       Get the city load status.
     */
-    getCityLoadStatus( state ){
+    getCityLoadStatus(state) {
       return state.cityLoadStatus;
     }
   }

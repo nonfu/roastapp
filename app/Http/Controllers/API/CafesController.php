@@ -9,6 +9,7 @@ use App\Models\Cafe;
 use App\Models\CafePhoto;
 use App\Models\Company;
 use App\Models\Tag;
+use App\Services\ActionService;
 use App\Services\CafeService;
 use App\Utilities\GaodeMaps;
 use App\Utilities\Tagger;
@@ -21,6 +22,15 @@ use Illuminate\Support\Facades\File;
 
 class CafesController extends Controller
 {
+    protected $actionService;
+    protected $cafeService;
+
+    public function __construct()
+    {
+        $this->actionService = new ActionService();
+        $this->cafeService = new CafeService();
+    }
+
     /*
      |-------------------------------------------------------------------------------
      | Get All Cafes
@@ -78,14 +88,26 @@ class CafesController extends Controller
     */
     public function postNewCafe(StoreCafeRequest $request)
     {
-        $cafeService = new CafeService();
-        $cafe = $cafeService->addCafe($request->all(), Auth::user()->id);
+        $companyID = $request->input('company_id');
+        $company = Company::where('id', '=', $companyID)->first();
+        $company = $company == null ? new Company() : $company;
 
-        $company = Company::where('id', '=', $cafe->company_id)
-            ->with('cafes')
-            ->first();
+        if (Auth::user()->can('create', [Cafe::class, $company])) {
+            $cafe = $this->cafeService->addCafe($request->all(), Auth::user()->id);
 
-        return response()->json($company, 201);
+            // 具备新增权限自动审核通过
+            $this->actionService->createApprovedAction(null, $cafe->company_id, 'cafe-added', $request->all(), Auth::user()->id);
+
+            $company = Company::where('id', '=', $cafe->company_id)
+                ->with('cafes')
+                ->first();
+
+            return response()->json($company, 201);
+        } else {
+            // 不具备新增权限需要等待后台审核通过才能新增这个咖啡店
+            $this->actionService->createPendingAction(null, $request->get('company_id'), 'cafe-added', $request->all(), Auth::user()->id);
+            return response()->json(['cafe_add_pending' => $request->get('company_name')], 202);
+        }
     }
 
     // 获取咖啡店编辑表单数据
@@ -104,24 +126,53 @@ class CafesController extends Controller
     // 更新咖啡店数据
     public function putEditCafe($id, EditCafeRequest $request)
     {
-        $cafe = Cafe::where('id', '=', $id)->with('brewMethods')->first();
+        $cafe = Cafe::where('id', '=', $id)->with('brewMethods')->with('company')->first();
+        if (!$cafe) {
+            abort(404);
+        }
 
-        $cafeService = new CafeService();
-        $updatedCafe = $cafeService->editCafe($cafe->id, $request->all(), Auth::user()->id);
+        // 保存修改之前/之后的咖啡店数据
+        $content['before'] = $cafe;
+        $content['after'] = $request->all();
 
-        $company = Company::where('id', '=', $updatedCafe->company_id)
-            ->with('cafes')
-            ->first();
+        if (Auth::user()->can('update', $cafe)) {
+            // 具备更新权限自动审核通过
+            $this->actionService->createApprovedAction($cafe->id, $cafe->company_id, 'cafe-updated', $content, Auth::user()->id);
 
-        return response()->json($company, 200);
+            $updatedCafe = $this->cafeService->editCafe($cafe->id, $request->all(), Auth::user()->id);
+
+            $company = Company::where('id', '=', $updatedCafe->company_id)
+                ->with('cafes')
+                ->first();
+
+            return response()->json($company, 200);
+
+        } else {
+            // 不具备更新权限需要等待后台审核通过才能更新这个咖啡店
+            $this->actionService->createPendingAction($cafe->id, $cafe->company_id, 'cafe-updated', $content, Auth::user()->id);
+            return response()->json(['cafe_updates_pending' => $request->get('company_name')], 202);
+        }
     }
 
     // 删除咖啡店
     public function deleteCafe($id)
     {
-        $cafe = Cafe::where('id', '=', $id)->first();
-        $cafe->delete();
-        return response()->json(['message' => '删除成功'], 204);
+        $cafe = Cafe::where('id', '=', $id)->with('company')->first();
+        if (!$cafe) {
+            abort(404);
+        }
+
+        if (Auth::user()->can('delete', $cafe)) {
+            // 具备删除权限自动审核通过
+            $this->actionService->createApprovedAction($cafe->id, $cafe->company_id, 'cafe-deleted', '', Auth::user()->id);
+
+            $cafe->delete();
+            return response()->json(['message' => '删除成功'], 204);
+        } else {
+            // 不具备删除权限需要等后台审核通过后才能执行删除操作
+            $this->actionService->createPendingAction($cafe->id, $cafe->company_id, 'cafe-deleted', '', Auth::user()->id);
+            return response()->json(['cafe_delete_pending' => $cafe->company->name], 202);
+        }
     }
 
     public function postLikeCafe($cafeID)
