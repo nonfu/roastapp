@@ -1,6 +1,6 @@
 # roastapp
 
-本项目是 Laravel 学院 Roast 应用源码
+本项目是 Laravel 学院 Roast 应用源码，Roast 是一个基于高德地图搜索附件咖啡店的项目，基于 Larave 5.6 + Vue 2 开发，是一个由 API 驱动的前后端分离应用。
 
 ### 应用截图
 
