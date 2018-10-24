@@ -38,6 +38,6 @@
  
  配置应用本地域名为 `roast.test`，就可访问应用了。 
 
-### 构建教程 & 使用说明
+### 构建教程
 
 <https://laravelacademy.org/api-driven-development-laravel-vue>
