@@ -4,7 +4,7 @@ export const CafeHasMatchaFilter = {
             /*
               Checks to see if the cafe has matcha
             */
-            if (cafe.matcha == 1) {
+            if (cafe.matcha === 1) {
                 return true;
             } else {
                 return false;
