@@ -14,7 +14,7 @@ class ActionService
         $action->cafe_id = $cafeID;
         $action->company_id = $companyID;
         $action->user_id = $userId;
-        $action->status = 0;
+        $action->status = Action::STATUS_PENDING;
         $action->type = $type;
         $action->content = json_encode($content);
 
@@ -28,12 +28,40 @@ class ActionService
         $action->cafe_id = $cafeID;
         $action->company_id = $companyID;
         $action->user_id = $userId;
-        $action->status = 1;
+        $action->status = Action::STATUS_APPROVED;
         $action->type = $type;
         $action->content = json_encode($content);
         $action->processed_by = $userId;
         $action->processed_on = Carbon::now();
 
+        $action->save();
+    }
+
+    /**
+     * Approves an action
+     *
+     * @param \App\Models\Action $action Action being approved.
+     * @param int processedBy
+     */
+    public static function approveAction($action, $processedBy)
+    {
+        $action->status = Action::STATUS_APPROVED;
+        $action->processed_by = $processedBy;
+        $action->processed_on = Carbon::now();
+        $action->save();
+    }
+
+    /**
+     * Denies an action
+     *
+     * @param \App\Models\Action $action Action being denied.
+     * @param int $processedBy
+     */
+    public static function denyAction($action, $processedBy)
+    {
+        $action->status = Action::STATUS_DENIED;
+        $action->processed_by = $processedBy;
+        $action->processed_on = Carbon::now();
         $action->save();
     }
 }

@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Action extends Model
 {
+    const STATUS_PENDING = 0;
+    const STATUS_APPROVED = 1;
+    const STATUS_DENIED = 2;
+
     public function cafes()
     {
         return $this->belongsTo(Cafe::class, 'cafe_id', 'id');

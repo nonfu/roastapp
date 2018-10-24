@@ -133,7 +133,6 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function () {
     Route::put('/cafes/{id}', 'API\CafesController@putEditCafe');
 
 
-
     // 喜欢/取消喜欢咖啡店
     Route::post('/cafes/{id}/like', 'API\CafesController@postLikeCafe');
     Route::delete('/cafes/{id}/like', 'API\CafesController@deleteLikeCafe');
@@ -175,10 +174,46 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function () {
     |-------------------------------------------------------------------------------
     | Deletes A Cafe
     |-------------------------------------------------------------------------------
-    | URL:            /api/v1/cafes/{slug}
+    | URL:            /api/v1/cafes/{id}
     | Controller:     API\CafesController@deleteCafe
     | Method:         DELETE
     | Description:    Deletes a cafe
     */
     Route::delete('/cafes/{id}', 'API\CafesController@deleteCafe');
+});
+
+// 管理后台路由
+Route::group(['prefix' => 'v1/admin', 'middleware' => ['auth:api', 'owner']], function () {
+    /*
+    |-------------------------------------------------------------------------------
+    | Get all actions
+    |-------------------------------------------------------------------------------
+    | URL:            /api/v1/admin/actions
+    | Controller:     API\Admin\ActionsController@getActions
+    | Method:         GET
+    | Description:    Get all actions
+    */
+    Route::get('/actions', 'API\Admin\ActionsController@getActions');
+
+    /*
+    |-------------------------------------------------------------------------------
+    | Approve specify action
+    |-------------------------------------------------------------------------------
+    | URL:            /api/v1/admin/actions/{id}/approve
+    | Controller:     API\Admin\ActionsController@putApproveAction
+    | Method:         PUT
+    | Description:    Approve specify action
+    */
+    Route::put('/actions/{id}/approve', 'API\Admin\ActionsController@putApproveAction');
+
+    /*
+    |-------------------------------------------------------------------------------
+    | Deny specify action
+    |-------------------------------------------------------------------------------
+    | URL:            /api/v1/admin/actions/{id}/deny
+    | Controller:     API\Admin\ActionsController@putDenyAction
+    | Method:         PUT
+    | Description:    Deny specify action
+    */
+    Route::put('/actions/{id}/deny', 'API\Admin\ActionsController@putDenyAction');
 });

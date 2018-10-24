@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Action;
 use App\Models\Cafe;
+use App\Policies\ActionPolicy;
 use App\Policies\CafePolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -18,6 +20,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         Cafe::class => CafePolicy::class,
+        Action::class => ActionPolicy::class
     ];
 
     /**

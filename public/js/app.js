@@ -40195,7 +40195,7 @@ var CafeTextFilter = {
             // 文本不为空时才会处理
             if (text.length > 0) {
                 // 如果咖啡店名称、位置、地址或城市与给定文本匹配，则返回 true，否则返回 false
-                if (cafe.name.toLowerCase().match('[^,]*' + text.toLowerCase() + '[,$]*') || cafe.location_name.toLowerCase().match('[^,]*' + text.toLowerCase() + '[,$]*') || cafe.address.toLowerCase().match('[^,]*' + text.toLowerCase() + '[,$]*') || cafe.city.toLowerCase().match('[^,]*' + text.toLowerCase() + '[,$]*')) {
+                if (cafe.company.name.match('[^,]*' + text + '[,$]*') || cafe.location_name.match('[^,]*' + text + '[,$]*') || cafe.address.match('[^,]*' + text + '[,$]*') || cafe.city.match('[^,]*' + text + '[,$]*')) {
                     return true;
                 } else {
                     return false;
@@ -40237,7 +40237,7 @@ var CafeHasMatchaFilter = {
             /*
               Checks to see if the cafe has matcha
             */
-            if (cafe.matcha == 1) {
+            if (cafe.matcha === 1) {
                 return true;
             } else {
                 return false;
@@ -40258,7 +40258,7 @@ var CafeHasTeaFilter = {
             /*
               Checks to see if the cafe has tea
             */
-            if (cafe.tea == 1) {
+            if (cafe.tea === 1) {
                 return true;
             } else {
                 return false;
@@ -60783,7 +60783,7 @@ var cafes = {
 
             __WEBPACK_IMPORTED_MODULE_0__api_cafe_js__["a" /* default */].postAddNewCafe(data.company_name, data.company_id, data.company_type, data.subscription, data.website, data.location_name, data.address, data.city, data.state, data.zip, data.brew_methods, data.matcha, data.tea).then(function (response) {
                 if (typeof response.data.cafe_add_pending !== 'undefined') {
-                    commit('setCafeAddedText', response.data.cafe_add_pending + ' 正在添加中!');
+                    commit('setCafeAddedText', response.data.cafe_add_pending + ' 审核通过才能添加!');
                 } else {
                     commit('setCafeAddedText', response.data.name + ' 已经添加!');
                 }
@@ -60818,7 +60818,7 @@ var cafes = {
 
             __WEBPACK_IMPORTED_MODULE_0__api_cafe_js__["a" /* default */].putEditCafe(data.id, data.company_name, data.company_id, data.company_type, data.subscription, data.website, data.location_name, data.address, data.city, data.state, data.zip, data.brew_methods, data.matcha, data.tea).then(function (response) {
                 if (typeof response.data.cafe_updates_pending !== 'undefined') {
-                    commit('setCafeEditText', response.data.cafe_updates_pending + ' 正在编辑中!');
+                    commit('setCafeEditText', response.data.cafe_updates_pending + ' 审核通过才能更新!');
                 } else {
                     commit('setCafeEditText', response.data.name + ' 已经编辑成功!');
                 }
@@ -60840,7 +60840,7 @@ var cafes = {
             __WEBPACK_IMPORTED_MODULE_0__api_cafe_js__["a" /* default */].deleteCafe(data.id).then(function (response) {
 
                 if (typeof response.data.cafe_delete_pending !== 'undefined') {
-                    commit('setCafeDeletedText', response.data.cafe_delete_pending + ' 正在删除中!');
+                    commit('setCafeDeletedText', response.data.cafe_delete_pending + ' 审核通过才能删除!');
                 } else {
                     commit('setCafeDeletedText', '咖啡店删除成功!');
                 }
