@@ -64,6 +64,9 @@
             this.$store.dispatch('loadUser');
             this.$store.dispatch('loadBrewMethods');
             this.$store.dispatch('loadCities');
+            if (this.$store._modules.get(['admin'])) {
+                this.$store.unregisterModule('admin', {});
+            }
         },
         computed: {
             showFilters() {

@@ -75,7 +75,7 @@
                 </div>
                 <div class="side-bar-link" v-if="user != '' && userLoadStatus === 2 && user.permission >= 1">
                     <router-link :to="{ name: 'admin'}" v-on:click.native="hideNav()">
-                        后台
+                        管理后台
                     </router-link>
                 </div>
                 <div class="side-bar-link">

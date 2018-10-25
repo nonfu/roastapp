@@ -22,7 +22,7 @@ class ActionsController extends Controller
         if (Auth::user()->permission >= User::ROLE_ADMIN) {
             $actions = Action::with('cafe')
                 ->with('company')
-                ->where('status', '=', 0)
+                ->where('status', '=', Action::STATUS_PENDING)
                 ->with('by')
                 ->get();
         } else {
@@ -30,7 +30,7 @@ class ActionsController extends Controller
             $actions = Action::with('cafe')
                 ->with('company')
                 ->whereIn('company_id', Auth::user()->companiesOwned()->pluck('id')->toArray())
-                ->where('status', '=', 0)
+                ->where('status', '=', Action::STATUS_PENDING)
                 ->with('by')
                 ->get();
         }

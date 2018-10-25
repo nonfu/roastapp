@@ -137,7 +137,7 @@
                 <div class="large-12 medium-12 small-12 cell">
                     <div class="grid-x grid-padding-x">
                         <div class="large-12 medium-12 small-12 cell">
-                            <label class="filter-label">City</label>
+                            <label class="filter-label">城市</label>
                             <select v-model="cityFilter">
                                 <option value=""></option>
                                 <option v-for="city in cities" v-bind:value="city.id">{{ city.name }}</option>
@@ -151,17 +151,17 @@
               </span>
                             <div class="grid-x grid-padding-x">
                                 <div class="large-12 medium-12 small-12 cell">
-                                    <label class="filter-label">Search by name or location</label>
+                                    <label class="filter-label">通过名称或位置搜索</label>
                                 </div>
                             </div>
                             <input type="text" class="search" v-model="textSearch"
-                                   placeholder="通过名称查找位置"/>
+                                   placeholder="通过名称或位置搜索"/>
                         </div>
                         <div class="large-6 medium-6 small-12 cell">
                             <div id="location-type-container">
                                 <div class="grid-x grid-padding-x">
                                     <div class="large-12 medium-12 small-12 cell">
-                                        <label class="filter-label">位置类型</label>
+                                        <label class="filter-label">咖啡店类型</label>
                                     </div>
                                 </div>
 
@@ -170,7 +170,7 @@
                                         <div class="location-filter all-locations"
                                              v-bind:class="{ 'active': activeLocationFilter === 'all' }"
                                              v-on:click="setActiveLocationFilter('all')">
-                                            所有位置
+                                            所有类型
                                         </div>
                                         <div class="location-filter roasters"
                                              v-bind:class="{ 'active': activeLocationFilter === 'roasters' }"
@@ -192,7 +192,7 @@
                          v-show="user != '' && userLoadStatus === 2">
                         <div class="large-12 medium-12 small-12 cell">
                             <input type="checkbox" v-model="onlyLiked"/> <span
-                                class="liked-location-label">只显示我喜欢过的位置</span>
+                                class="liked-location-label">只显示我喜欢过的</span>
                         </div>
                     </div>
 

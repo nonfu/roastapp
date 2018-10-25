@@ -23,8 +23,40 @@ function requireAuth(to, from, next) {
         // 如果用户信息已经加载并且不为空则说明该用户已登录，可以继续访问路由，否则跳转到首页
         // 这个功能类似 Laravel 中的 auth 中间件
         if (store.getters.getUserLoadStatus() === 2) {
-            if (store.getters.getUser != '') {
-                next();
+            if (store.getters.getUser !== '') {
+                switch (to.meta.permission) {
+                    // 如果权限级别是普通用户则继续
+                    case 'user':
+                        next();
+                        break;
+
+                    // 如果权限级别是商家则需要判断用户角色是否满足
+                    case 'owner':
+                        if (store.getters.getUser.permission >= 1) {
+                            next();
+                        } else {
+                            next('/cafes');
+                        }
+                        break;
+
+                    // 如果权限级别是管理员则需要判断用户角色是否满足
+                    case 'admin':
+                        if (store.getters.getUser.permission >= 2) {
+                            next();
+                        } else {
+                            next('/cafes');
+                        }
+                        break;
+
+                    // 如果权限级别是超级管理员则需要判断用户角色是否满足
+                    case 'super-admin':
+                        if (store.getters.getUser.permission === 3) {
+                            next();
+                        } else {
+                            next('/cafes');
+                        }
+                        break;
+                }
             } else {
                 next('/');
             }
@@ -67,7 +99,10 @@ export default new VueRouter({
                             path: 'new',
                             name: 'newcafe',
                             component: Vue.component('NewCafe', require('./pages/NewCafe.vue')),
-                            beforeEnter: requireAuth
+                            beforeEnter: requireAuth,
+                            meta: {
+                                permission: 'user'
+                            }
                         },
                         {
                             path: ':id',
@@ -85,13 +120,42 @@ export default new VueRouter({
                     path: 'cafes/:id/edit',
                     name: 'editcafe',
                     component: Vue.component('EditCafe', require('./pages/EditCafe.vue')),
-                    beforeEnter: requireAuth
+                    beforeEnter: requireAuth,
+                    meta: {
+                        permission: 'user'
+                    }
                 },
                 {
                     path: 'profile',
                     name: 'profile',
                     component: Vue.component('Profile', require('./pages/Profile.vue')),
-                    beforeEnter: requireAuth
+                    beforeEnter: requireAuth,
+                    meta: {
+                        permission: 'user'
+                    }
+                },
+                {
+                    path: '_=_',
+                    redirect: '/'
+                }
+            ]
+        },
+        {
+            path: '/admin',
+            name: 'admin',
+            component: Vue.component('Admin', require('./layouts/Admin.vue')),
+            beforeEnter: requireAuth,
+            meta: {
+                permission: 'owner'
+            },
+            children: [
+                {
+                    path: 'actions',
+                    name: 'admin-actions',
+                    component: Vue.component('AdminActions', require('./pages/admin/Actions.vue')),
+                    meta: {
+                        permission: 'owner'
+                    }
                 },
                 {
                     path: '_=_',

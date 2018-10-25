@@ -11,9 +11,14 @@ class Action extends Model
     const STATUS_APPROVED = 1;
     const STATUS_DENIED = 2;
 
-    public function cafes()
+    public function cafe()
     {
         return $this->belongsTo(Cafe::class, 'cafe_id', 'id');
+    }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'company_id', 'id');
     }
 
     public function by()

@@ -158,7 +158,7 @@
 
             <div class="grid-x grid-padding-x">
                 <div class="large-12 medium-12 small-12 cell">
-                    <span class="filters-header">查找你寻找的咖啡店类型</span>
+                    <span class="filters-header">查找你寻找的咖啡店</span>
                 </div>
             </div>
 
@@ -167,14 +167,14 @@
                     <span class="clear-filters" v-show="showFilters" v-on:click="clearFilters()">
                         <img src="/storage/img/clear-filters-icon.svg"/> 清除过滤器
                     </span>
-                    <input type="text" class="search" v-model="textSearch" placeholder="通过名称查找位置"/>
+                    <input type="text" class="search" v-model="textSearch" placeholder="通过名称或位置搜索"/>
                 </div>
             </div>
 
             <div id="location-type-container">
                 <div class="grid-x grid-padding-x">
                     <div class="large-12 medium-12 small-12 cell">
-                        <label class="filter-label">位置类型</label>
+                        <label class="filter-label">咖啡店类型</label>
                     </div>
                 </div>
 
@@ -183,7 +183,7 @@
                         <div class="location-filter all-locations"
                              v-bind:class="{ 'active': activeLocationFilter === 'all' }"
                              v-on:click="setActiveLocationFilter('all')">
-                            所有位置
+                            所有类型
                         </div>
                         <div class="location-filter roasters"
                              v-bind:class="{ 'active': activeLocationFilter === 'roasters' }"
