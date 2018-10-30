@@ -43,12 +43,12 @@
                 {{ type }}
             </div>
             <div class="large-3 medium-3 cell">
-                <span class="approve-action" v-on:click="approveAction()">Approve</span>
-                <span class="deny-action" v-on:click="denyAction()">Deny</span>
+                <span class="approve-action" v-on:click="approveAction()">通过</span>
+                <span class="deny-action" v-on:click="denyAction()">拒绝</span>
                 <span v-on:click="showDetails = !showDetails">
-          <img src="/storage/img/more-info-closed.svg" class="more-info" v-show="!showDetails"/>
-          <img src="/storage/img/more-info-open.svg" class="more-info" v-show="showDetails"/>
-        </span>
+                    <img src="/storage/img/more-info-closed.svg" class="more-info" v-show="!showDetails"/>
+                    <img src="/storage/img/more-info-open.svg" class="more-info" v-show="showDetails"/>
+                </span>
             </div>
         </div>
         <div class="grid-x" v-show="showDetails">
@@ -87,11 +87,11 @@
             type() {
                 switch (this.action.type) {
                     case 'cafe-added':
-                        return '咖啡店已添加';
+                        return '添加咖啡店';
                     case 'cafe-updated':
-                        return '咖啡店已更新';
+                        return '更新咖啡店';
                     case 'cafe-deleted':
-                        return '咖啡店已删除';
+                        return '删除咖啡店';
                 }
             },
 

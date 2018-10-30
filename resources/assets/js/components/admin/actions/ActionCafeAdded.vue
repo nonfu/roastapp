@@ -90,72 +90,37 @@
 
 <script>
     export default {
-        /*
-          Accepts an action as a property.
-        */
         props: ['action'],
 
-        /*
-          Defines the data used by the component.
-        */
         data() {
             return {
                 content: ''
             }
         },
 
-        /*
-          When created, parses the action content to the local
-          data content variable.
-        */
         created() {
             this.content = JSON.parse(this.action.content);
         },
 
-        /*
-          Defines the computed properties on the component.
-        */
         computed: {
-            /*
-              Loads the brew methods from the component.
-            */
+
             brewMethods() {
                 return this.$store.getters.getBrewMethods;
             },
 
-            /*
-              Defines the brew methods used by the action.
-            */
             actionBrewMethods() {
-                /*
-                  Initializes the action brew methods
-                */
                 let actionBrewMethods = [];
 
-                /*
-                  Parses the brew methods array from the content.
-                */
                 let contentBrewMethods = JSON.parse(this.content.brew_methods);
 
-                /*
-                  Iterate over the brew methods on the content and match with the
-                  brew methods defined.
-                */
                 for (let i = 0; i < contentBrewMethods.length; i++) {
                     for (let k = 0; k < this.brewMethods.length; k++) {
-                        /*
-                          If the brew method IDs match, add the brew method to the action brew
-                          methods.
-                        */
                         if (parseInt(contentBrewMethods[i]) === parseInt(this.brewMethods[k].id)) {
                             actionBrewMethods.push(this.brewMethods[k]);
                         }
                     }
                 }
 
-                /*
-                  Returns the action brew methods.
-                */
                 return actionBrewMethods;
             }
         }

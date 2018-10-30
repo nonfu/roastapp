@@ -12,14 +12,14 @@ export default {
     },
 
     /*
-      PUT   /admin/v1/admin/actions/{actionID}/approve
+      PUT   /api/v1/admin/actions/{action}/approve
     */
     putApproveAction: function (id) {
         return axios.put(ROAST_CONFIG.API_URL + '/admin/actions/' + id + '/approve');
     },
 
     /*
-      PUT   /admin/v1/admin/actions/{actionID}/deny
+      PUT   /api/v1/admin/actions/{action}/deny
     */
     putDenyAction: function (id) {
         return axios.put(ROAST_CONFIG.API_URL + '/admin/actions/' + id + '/deny');

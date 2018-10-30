@@ -30,7 +30,7 @@ class ActionPolicy
      */
     public function approve(User $user, Action $action)
     {
-        if ($user->permission == 2 || $user->permission == 3) {
+        if ($user->permission == User::ROLE_ADMIN || $user->permission == User::ROLE_SUPER_ADMIN) {
             return true;
         } else if ($user->companiesOwned->contains($action->company_id)) {
             return true;
@@ -49,7 +49,7 @@ class ActionPolicy
      */
     public function deny(User $user, Action $action)
     {
-        if ($user->permission == 2 || $user->permission == 3) {
+        if ($user->permission == User::ROLE_ADMIN || $user->permission == User::ROLE_SUPER_ADMIN) {
             return true;
         } else if ($user->companiesOwned->contains($action->company_id)) {
             return true;

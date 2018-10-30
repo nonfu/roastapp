@@ -74464,14 +74464,14 @@ var actions = {
   },
 
   /*
-    PUT   /admin/v1/admin/actions/{actionID}/approve
+    PUT   /api/v1/admin/actions/{id}/approve
   */
   putApproveAction: function putApproveAction(id) {
     return axios.put(__WEBPACK_IMPORTED_MODULE_0__config_js__["a" /* ROAST_CONFIG */].API_URL + '/admin/actions/' + id + '/approve');
   },
 
   /*
-    PUT   /admin/v1/admin/actions/{actionID}/deny
+    PUT   /api/v1/admin/actions/{id}/deny
   */
   putDenyAction: function putDenyAction(id) {
     return axios.put(__WEBPACK_IMPORTED_MODULE_0__config_js__["a" /* ROAST_CONFIG */].API_URL + '/admin/actions/' + id + '/deny');
@@ -74904,11 +74904,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         type: function type() {
             switch (this.action.type) {
                 case 'cafe-added':
-                    return '咖啡店已添加';
+                    return '添加咖啡店';
                 case 'cafe-updated':
-                    return '咖啡店已更新';
+                    return '更新咖啡店';
                 case 'cafe-deleted':
-                    return '咖啡店已删除';
+                    return '删除咖啡店';
             }
         },
         actionApproveStatus: function actionApproveStatus() {
@@ -75140,78 +75140,38 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  /*
-    Accepts an action as a property.
-  */
-  props: ['action'],
+    props: ['action'],
 
-  /*
-    Defines the data used by the component.
-  */
-  data: function data() {
-    return {
-      content: ''
-    };
-  },
-
-
-  /*
-    When created, parses the action content to the local
-    data content variable.
-  */
-  created: function created() {
-    this.content = JSON.parse(this.action.content);
-  },
-
-
-  /*
-    Defines the computed properties on the component.
-  */
-  computed: {
-    /*
-      Loads the brew methods from the component.
-    */
-    brewMethods: function brewMethods() {
-      return this.$store.getters.getBrewMethods;
+    data: function data() {
+        return {
+            content: ''
+        };
+    },
+    created: function created() {
+        this.content = JSON.parse(this.action.content);
     },
 
 
-    /*
-      Defines the brew methods used by the action.
-    */
-    actionBrewMethods: function actionBrewMethods() {
-      /*
-        Initializes the action brew methods
-      */
-      var actionBrewMethods = [];
+    computed: {
+        brewMethods: function brewMethods() {
+            return this.$store.getters.getBrewMethods;
+        },
+        actionBrewMethods: function actionBrewMethods() {
+            var actionBrewMethods = [];
 
-      /*
-        Parses the brew methods array from the content.
-      */
-      var contentBrewMethods = JSON.parse(this.content.brew_methods);
+            var contentBrewMethods = JSON.parse(this.content.brew_methods);
 
-      /*
-        Iterate over the brew methods on the content and match with the
-        brew methods defined.
-      */
-      for (var i = 0; i < contentBrewMethods.length; i++) {
-        for (var k = 0; k < this.brewMethods.length; k++) {
-          /*
-            If the brew method IDs match, add the brew method to the action brew
-            methods.
-          */
-          if (parseInt(contentBrewMethods[i]) === parseInt(this.brewMethods[k].id)) {
-            actionBrewMethods.push(this.brewMethods[k]);
-          }
+            for (var i = 0; i < contentBrewMethods.length; i++) {
+                for (var k = 0; k < this.brewMethods.length; k++) {
+                    if (parseInt(contentBrewMethods[i]) === parseInt(this.brewMethods[k].id)) {
+                        actionBrewMethods.push(this.brewMethods[k]);
+                    }
+                }
+            }
+
+            return actionBrewMethods;
         }
-      }
-
-      /*
-        Returns the action brew methods.
-      */
-      return actionBrewMethods;
     }
-  }
 });
 
 /***/ }),
@@ -75445,13 +75405,13 @@ var content = __webpack_require__(214);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(1)("7ec98a6e", content, false, {});
+var update = __webpack_require__(1)("f96df010", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-651aa4f6\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ActionCafeEdited.vue", function() {
-     var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-651aa4f6\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ActionCafeEdited.vue");
+   module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-651aa4f6\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/sass-loader/lib/loader.js!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ActionCafeEdited.vue", function() {
+     var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-651aa4f6\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/sass-loader/lib/loader.js!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ActionCafeEdited.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -75469,7 +75429,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n\n", ""]);
+exports.push([module.i, "\ndiv.action-cafe-edited span.change {\n  color: red;\n}\n", ""]);
 
 // exports
 
@@ -75570,564 +75530,139 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    /*
-      Accepts an action as a property.
-    */
     props: ['action'],
 
-    /*
-      Defines the data used by the component.
-    */
     data: function data() {
         return {
             content: ''
         };
     },
-
-
-    /*
-      When created, parses the action content to the local
-      data content variable.
-    */
     created: function created() {
         this.content = JSON.parse(this.action.content);
+    },
+
+
+    computed: {
+        brewMethods: function brewMethods() {
+            return this.$store.getters.getBrewMethods;
+        },
+        actionBrewMethods: function actionBrewMethods() {
+            var actionBrewMethods = [];
+            var contentBrewMethods = JSON.parse(this.content.after.brew_methods);
+
+            for (var i = 0; i < contentBrewMethods.length; i++) {
+                for (var k = 0; k < this.brewMethods.length; k++) {
+                    if (parseInt(contentBrewMethods[i]) === parseInt(this.brewMethods[k].id)) {
+                        actionBrewMethods.push(this.brewMethods[k]);
+                    }
+                }
+            }
+
+            return actionBrewMethods;
+        }
     }
 });
 
 /***/ }),
 /* 216 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "action-cafe-deleted action-cafe-detail" }, [
-    _c("div", { staticClass: "grid-x grid-padding-x" }, [
-      _c("div", { staticClass: "large-6 medium-6 cell" }, [
-        _c("div", { staticClass: "grid-x" }, [
-          _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
-            _c("label", [_vm._v("Company")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "action-content" }, [
-              _vm._v(_vm._s(_vm.action.cafe.company_name))
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "grid-x" }, [
-          _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
-            _c("label", [_vm._v("Website")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "action-content" }, [
-              _vm._v(_vm._s(_vm.action.cafe.website))
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "grid-x" }, [
-          _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
-            _c("label", [_vm._v("Location Name")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "action-content" }, [
-              _vm._v(_vm._s(_vm.action.cafe.location_name))
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "grid-x" }, [
-          _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
-            _c("label", [_vm._v("Address")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "action-content" }, [
-              _vm._v(_vm._s(_vm.action.cafe.address))
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "grid-x" }, [
-          _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
-            _c("label", [_vm._v("City")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "action-content" }, [
-              _vm._v(_vm._s(_vm.action.cafe.city))
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "grid-x" }, [
-          _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
-            _c("label", [_vm._v("State")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "action-content" }, [
-              _vm._v(_vm._s(_vm.action.cafe.state))
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "grid-x" }, [
-          _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
-            _c("label", [_vm._v("Zip")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "action-content" }, [
-              _vm._v(_vm._s(_vm.action.cafe.zip))
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "grid-x" }, [
-          _c(
-            "div",
-            { staticClass: "large-12 medium-12 small-12 cell" },
-            [
-              _c("label", [_vm._v("Brew Methods")]),
-              _vm._v(" "),
-              _vm._l(_vm.action.cafe.brew_methods, function(method) {
-                return _c("div", { staticClass: "brew-method option" }, [
-                  _c("div", { staticClass: "option-container" }, [
-                    _c("img", {
-                      staticClass: "option-icon",
-                      attrs: { src: method.icon + ".svg" }
-                    }),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "option-name" }, [
-                      _vm._v(_vm._s(method.method))
-                    ])
-                  ])
-                ])
-              })
-            ],
-            2
-          )
-        ]),
-        _vm._v(" "),
-        _vm.action.cafe.tea == 1
-          ? _c("div", { staticClass: "grid-x" }, [
-              _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
-                _c("label", [_vm._v("Tea")]),
-                _vm._v(" "),
-                _c("div", { staticClass: "drink-option option" }, [
-                  _c("div", { staticClass: "option-container" }, [
-                    _c("img", {
-                      staticClass: "option-icon",
-                      attrs: { src: "/img/icons/tea-bag.svg" }
-                    }),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "option-name" }, [_vm._v("Tea")])
-                  ])
-                ])
-              ])
-            ])
-          : _vm._e(),
-        _vm._v(" "),
-        _vm.action.cafe.matcha == 1
-          ? _c("div", { staticClass: "grid-x" }, [
-              _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
-                _c("label", [_vm._v("Matcha")]),
-                _vm._v(" "),
-                _c("div", { staticClass: "drink-option option" }, [
-                  _c("div", { staticClass: "option-container" }, [
-                    _c("img", {
-                      staticClass: "option-icon",
-                      attrs: { src: "/img/icons/matcha-latte.svg" }
-                    }),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "option-name" }, [
-                      _vm._v("Matcha")
-                    ])
-                  ])
-                ])
-              ])
-            ])
-          : _vm._e()
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "large-12 medium-12 cell" }, [
-        _c("span", { staticClass: "action-information" }, [
-          _vm._v(
-            "Cafe Deleted by " +
-              _vm._s(_vm.action.by.name) +
-              " on " +
-              _vm._s(_vm.action.created_at)
-          )
-        ])
-      ])
-    ])
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-651aa4f6", module.exports)
-  }
-}
-
-/***/ }),
-/* 217 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(218)
-}
-var normalizeComponent = __webpack_require__(2)
-/* script */
-var __vue_script__ = __webpack_require__(220)
-/* template */
-var __vue_template__ = __webpack_require__(221)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/admin/actions/ActionCafeDeleted.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-04edff6d", Component.options)
-  } else {
-    hotAPI.reload("data-v-04edff6d", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 218 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(219);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(1)("7aa8cd47", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-04edff6d\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/sass-loader/lib/loader.js!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ActionCafeDeleted.vue", function() {
-     var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-04edff6d\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/sass-loader/lib/loader.js!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ActionCafeDeleted.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 219 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\ndiv.action-cafe-edited span.change {\n  color: red;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 220 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  /*
-    Accepts an action as a property.
-  */
-  props: ['action'],
-
-  /*
-    Defines the data used by the component.
-  */
-  data: function data() {
-    return {
-      content: ''
-    };
-  },
-
-
-  /*
-    When created, parses the action content to the local
-    data content variable.
-  */
-  created: function created() {
-    this.content = JSON.parse(this.action.content);
-  },
-
-
-  /*
-    Defines the computed properties on the component.
-  */
-  computed: {
-    /*
-      Loads the brew methods from the component.
-    */
-    brewMethods: function brewMethods() {
-      return this.$store.getters.getBrewMethods;
-    },
-
-
-    /*
-      Defines the brew methods used by the action.
-    */
-    actionBrewMethods: function actionBrewMethods() {
-      /*
-        Initializes the action brew methods
-      */
-      var actionBrewMethods = [];
-
-      /*
-        Parses the brew methods array from the content.
-      */
-      var contentBrewMethods = JSON.parse(this.content.after.brew_methods);
-
-      /*
-        Iterate over the brew methods on the content and match with the
-        brew methods defined.
-      */
-      for (var i = 0; i < contentBrewMethods.length; i++) {
-        for (var k = 0; k < this.brewMethods.length; k++) {
-
-          /*
-            If the brew method IDs match, add the brew method to the action brew
-            methods.
-          */
-          if (parseInt(contentBrewMethods[i]) === parseInt(this.brewMethods[k].id)) {
-            actionBrewMethods.push(this.brewMethods[k]);
-          }
-        }
-      }
-
-      /*
-        Returns the action brew methods.
-      */
-      return actionBrewMethods;
-    }
-  }
-});
-
-/***/ }),
-/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -76161,7 +75696,7 @@ var render = function() {
         _vm._v(" "),
         _c("div", { staticClass: "grid-x" }, [
           _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
-            _c("label", [_vm._v("位置地址")]),
+            _c("label", [_vm._v("位置名称")]),
             _vm._v(" "),
             _c("span", { staticClass: "action-content" }, [
               _vm._v(_vm._s(_vm.action.cafe.location_name))
@@ -76279,7 +75814,7 @@ var render = function() {
         _vm._v(" "),
         _c("div", { staticClass: "grid-x" }, [
           _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
-            _c("label", [_vm._v("Company")]),
+            _c("label", [_vm._v("公司名称")]),
             _vm._v(" "),
             _c(
               "span",
@@ -76287,7 +75822,7 @@ var render = function() {
                 staticClass: "action-content",
                 class: {
                   change:
-                    _vm.content.after.company_name != _vm.action.company.name
+                    _vm.content.after.company_name !== _vm.action.company.name
                 }
               },
               [_vm._v(_vm._s(_vm.content.after.company_name))]
@@ -76297,7 +75832,7 @@ var render = function() {
         _vm._v(" "),
         _c("div", { staticClass: "grid-x" }, [
           _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
-            _c("label", [_vm._v("Website")]),
+            _c("label", [_vm._v("网站")]),
             _vm._v(" "),
             _c(
               "span",
@@ -76305,7 +75840,7 @@ var render = function() {
                 staticClass: "action-content",
                 class: {
                   change:
-                    _vm.content.after.website != _vm.action.company.website
+                    _vm.content.after.website !== _vm.action.company.website
                 }
               },
               [_vm._v(_vm._s(_vm.content.after.website))]
@@ -76315,7 +75850,7 @@ var render = function() {
         _vm._v(" "),
         _c("div", { staticClass: "grid-x" }, [
           _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
-            _c("label", [_vm._v("Location Name")]),
+            _c("label", [_vm._v("位置名称")]),
             _vm._v(" "),
             _c(
               "span",
@@ -76323,7 +75858,7 @@ var render = function() {
                 staticClass: "action-content",
                 class: {
                   change:
-                    _vm.content.after.location_name !=
+                    _vm.content.after.location_name !==
                     _vm.action.cafe.location_name
                 }
               },
@@ -76334,14 +75869,14 @@ var render = function() {
         _vm._v(" "),
         _c("div", { staticClass: "grid-x" }, [
           _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
-            _c("label", [_vm._v("Address")]),
+            _c("label", [_vm._v("街道地址")]),
             _vm._v(" "),
             _c(
               "span",
               {
                 staticClass: "action-content",
                 class: {
-                  change: _vm.content.after.address != _vm.action.cafe.address
+                  change: _vm.content.after.address !== _vm.action.cafe.address
                 }
               },
               [_vm._v(_vm._s(_vm.content.after.address))]
@@ -76351,14 +75886,14 @@ var render = function() {
         _vm._v(" "),
         _c("div", { staticClass: "grid-x" }, [
           _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
-            _c("label", [_vm._v("City")]),
+            _c("label", [_vm._v("城市")]),
             _vm._v(" "),
             _c(
               "span",
               {
                 staticClass: "action-content",
                 class: {
-                  change: _vm.content.after.city != _vm.action.cafe.city
+                  change: _vm.content.after.city !== _vm.action.cafe.city
                 }
               },
               [_vm._v(_vm._s(_vm.content.after.city))]
@@ -76368,14 +75903,14 @@ var render = function() {
         _vm._v(" "),
         _c("div", { staticClass: "grid-x" }, [
           _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
-            _c("label", [_vm._v("State")]),
+            _c("label", [_vm._v("省份")]),
             _vm._v(" "),
             _c(
               "span",
               {
                 staticClass: "action-content",
                 class: {
-                  change: _vm.content.after.state != _vm.action.cafe.state
+                  change: _vm.content.after.state !== _vm.action.cafe.state
                 }
               },
               [_vm._v(_vm._s(_vm.content.after.state))]
@@ -76385,13 +75920,13 @@ var render = function() {
         _vm._v(" "),
         _c("div", { staticClass: "grid-x" }, [
           _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
-            _c("label", [_vm._v("Zip")]),
+            _c("label", [_vm._v("邮编")]),
             _vm._v(" "),
             _c(
               "span",
               {
                 staticClass: "action-content",
-                class: { change: _vm.content.after.zip != _vm.action.cafe.zip }
+                class: { change: _vm.content.after.zip !== _vm.action.cafe.zip }
               },
               [_vm._v(_vm._s(_vm.content.after.zip))]
             )
@@ -76403,14 +75938,14 @@ var render = function() {
             "div",
             { staticClass: "large-12 medium-12 small-12 cell" },
             [
-              _c("label", [_vm._v("Brew Methods")]),
+              _c("label", [_vm._v("冲泡方法")]),
               _vm._v(" "),
               _vm._l(_vm.actionBrewMethods, function(method) {
                 return _c("div", { staticClass: "brew-method option" }, [
                   _c("div", { staticClass: "option-container" }, [
                     _c("img", {
                       staticClass: "option-icon",
-                      attrs: { src: method.icon + ".svg" }
+                      attrs: { src: method.icon }
                     }),
                     _vm._v(" "),
                     _c("span", { staticClass: "option-name" }, [
@@ -76424,40 +75959,38 @@ var render = function() {
           )
         ]),
         _vm._v(" "),
-        _vm.content.after.tea == 1
+        _vm.content.after.tea === 1
           ? _c("div", { staticClass: "grid-x" }, [
               _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
-                _c("label", [_vm._v("Tea")]),
+                _c("label", [_vm._v("茶包")]),
                 _vm._v(" "),
                 _c("div", { staticClass: "drink-option option" }, [
                   _c("div", { staticClass: "option-container" }, [
                     _c("img", {
                       staticClass: "option-icon",
-                      attrs: { src: "/img/icons/tea-bag.svg" }
+                      attrs: { src: "/storage/img/icons/tea-bag.svg" }
                     }),
                     _vm._v(" "),
-                    _c("span", { staticClass: "option-name" }, [_vm._v("Tea")])
+                    _c("span", { staticClass: "option-name" }, [_vm._v("茶包")])
                   ])
                 ])
               ])
             ])
           : _vm._e(),
         _vm._v(" "),
-        _vm.content.after.matcha == 1
+        _vm.content.after.matcha === 1
           ? _c("div", { staticClass: "grid-x" }, [
               _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
-                _c("label", [_vm._v("Matcha")]),
+                _c("label", [_vm._v("抹茶")]),
                 _vm._v(" "),
                 _c("div", { staticClass: "drink-option option" }, [
                   _c("div", { staticClass: "option-container" }, [
                     _c("img", {
                       staticClass: "option-icon",
-                      attrs: { src: "/img/icons/matcha-latte.svg" }
+                      attrs: { src: "/storage/img/icons/matcha-latte.svg" }
                     }),
                     _vm._v(" "),
-                    _c("span", { staticClass: "option-name" }, [
-                      _vm._v("Matcha")
-                    ])
+                    _c("span", { staticClass: "option-name" }, [_vm._v("抹茶")])
                   ])
                 ])
               ])
@@ -76485,7 +76018,9 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "grid-x" }, [
       _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
-        _c("span", { staticClass: "action-detail-header" }, [_vm._v("Current")])
+        _c("span", { staticClass: "action-detail-header" }, [
+          _vm._v("当前数据")
+        ])
       ])
     ])
   },
@@ -76496,12 +76031,382 @@ var staticRenderFns = [
     return _c("div", { staticClass: "grid-x" }, [
       _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
         _c("span", { staticClass: "action-detail-header" }, [
-          _vm._v("Proposed Update")
+          _vm._v("更新后数据")
         ])
       ])
     ])
   }
 ]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-651aa4f6", module.exports)
+  }
+}
+
+/***/ }),
+/* 217 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(218)
+}
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(220)
+/* template */
+var __vue_template__ = __webpack_require__(221)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/admin/actions/ActionCafeDeleted.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-04edff6d", Component.options)
+  } else {
+    hotAPI.reload("data-v-04edff6d", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 218 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(219);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(1)("95176b14", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-04edff6d\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ActionCafeDeleted.vue", function() {
+     var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-04edff6d\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ActionCafeDeleted.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 219 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 220 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['action'],
+
+    data: function data() {
+        return {
+            content: ''
+        };
+    },
+    created: function created() {
+        this.content = JSON.parse(this.action.content);
+    }
+});
+
+/***/ }),
+/* 221 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "action-cafe-deleted action-cafe-detail" }, [
+    _c("div", { staticClass: "grid-x grid-padding-x" }, [
+      _c("div", { staticClass: "large-6 medium-6 cell" }, [
+        _c("div", { staticClass: "grid-x" }, [
+          _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
+            _c("label", [_vm._v("公司名称")]),
+            _vm._v(" "),
+            _c("span", { staticClass: "action-content" }, [
+              _vm._v(_vm._s(_vm.action.cafe.company_name))
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "grid-x" }, [
+          _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
+            _c("label", [_vm._v("网站")]),
+            _vm._v(" "),
+            _c("span", { staticClass: "action-content" }, [
+              _vm._v(_vm._s(_vm.action.cafe.website))
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "grid-x" }, [
+          _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
+            _c("label", [_vm._v("位置名称")]),
+            _vm._v(" "),
+            _c("span", { staticClass: "action-content" }, [
+              _vm._v(_vm._s(_vm.action.cafe.location_name))
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "grid-x" }, [
+          _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
+            _c("label", [_vm._v("街道地址")]),
+            _vm._v(" "),
+            _c("span", { staticClass: "action-content" }, [
+              _vm._v(_vm._s(_vm.action.cafe.address))
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "grid-x" }, [
+          _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
+            _c("label", [_vm._v("城市")]),
+            _vm._v(" "),
+            _c("span", { staticClass: "action-content" }, [
+              _vm._v(_vm._s(_vm.action.cafe.city))
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "grid-x" }, [
+          _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
+            _c("label", [_vm._v("省份")]),
+            _vm._v(" "),
+            _c("span", { staticClass: "action-content" }, [
+              _vm._v(_vm._s(_vm.action.cafe.state))
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "grid-x" }, [
+          _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
+            _c("label", [_vm._v("邮编")]),
+            _vm._v(" "),
+            _c("span", { staticClass: "action-content" }, [
+              _vm._v(_vm._s(_vm.action.cafe.zip))
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "grid-x" }, [
+          _c(
+            "div",
+            { staticClass: "large-12 medium-12 small-12 cell" },
+            [
+              _c("label", [_vm._v("冲泡方法")]),
+              _vm._v(" "),
+              _vm._l(_vm.action.cafe.brew_methods, function(method) {
+                return _c("div", { staticClass: "brew-method option" }, [
+                  _c("div", { staticClass: "option-container" }, [
+                    _c("img", {
+                      staticClass: "option-icon",
+                      attrs: { src: method.icon }
+                    }),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "option-name" }, [
+                      _vm._v(_vm._s(method.method))
+                    ])
+                  ])
+                ])
+              })
+            ],
+            2
+          )
+        ]),
+        _vm._v(" "),
+        _vm.action.cafe.tea === 1
+          ? _c("div", { staticClass: "grid-x" }, [
+              _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
+                _c("label", [_vm._v("茶包")]),
+                _vm._v(" "),
+                _c("div", { staticClass: "drink-option option" }, [
+                  _c("div", { staticClass: "option-container" }, [
+                    _c("img", {
+                      staticClass: "option-icon",
+                      attrs: { src: "/storage/img/tea-bag.svg" }
+                    }),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "option-name" }, [_vm._v("茶包")])
+                  ])
+                ])
+              ])
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.action.cafe.matcha === 1
+          ? _c("div", { staticClass: "grid-x" }, [
+              _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
+                _c("label", [_vm._v("抹茶")]),
+                _vm._v(" "),
+                _c("div", { staticClass: "drink-option option" }, [
+                  _c("div", { staticClass: "option-container" }, [
+                    _c("img", {
+                      staticClass: "option-icon",
+                      attrs: { src: "/storage/img/matcha-latte.svg" }
+                    }),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "option-name" }, [_vm._v("抹茶")])
+                  ])
+                ])
+              ])
+            ])
+          : _vm._e()
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "large-12 medium-12 cell" }, [
+        _c("span", { staticClass: "action-information" }, [
+          _vm._v(
+            "Cafe Deleted by " +
+              _vm._s(_vm.action.by.name) +
+              " on " +
+              _vm._s(_vm.action.created_at)
+          )
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -76554,7 +76459,7 @@ var render = function() {
               }
             }
           },
-          [_vm._v("Approve")]
+          [_vm._v("通过")]
         ),
         _vm._v(" "),
         _c(
@@ -76567,7 +76472,7 @@ var render = function() {
               }
             }
           },
-          [_vm._v("Deny")]
+          [_vm._v("拒绝")]
         ),
         _vm._v(" "),
         _c(

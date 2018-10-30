@@ -14,10 +14,10 @@ class User extends Authenticatable
 {
     use Notifiable, HasApiTokens;
 
-    const ROLE_GENERAL_USER = 0;
-    const ROLE_SHOP_OWNER = 1;
-    const ROLE_ADMIN = 2;
-    const ROLE_SUPER_ADMIN = 3;
+    const ROLE_GENERAL_USER = 0;  // 普通用户
+    const ROLE_SHOP_OWNER = 1;    // 商家用户
+    const ROLE_ADMIN = 2;         // 管理员
+    const ROLE_SUPER_ADMIN = 3;   // 超级管理员
 
     /**
      * The attributes that are mass assignable.

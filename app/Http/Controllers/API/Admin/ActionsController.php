@@ -45,6 +45,9 @@ class ActionsController extends Controller
      */
     public function putApproveAction(Action $action)
     {
+        if (Auth::user()->cant('approve', $action)) {
+            abort(403, '该用户没有通过审核权限');
+        }
         $cafeService = new CafeService();
         $actionService = new ActionService();
         // 根据操作类型分类处理
@@ -77,7 +80,7 @@ class ActionsController extends Controller
                 $cafe->delete();
 
                 // 通过这条审核
-                $actionService->approveAction($action);
+                $actionService->approveAction($action, Auth::user()->id);
                 break;
         }
 
@@ -93,6 +96,9 @@ class ActionsController extends Controller
      */
     public function putDenyAction(Action $action)
     {
+        if (Auth::user()->cant('deny', $action)) {
+            abort(403, '该用户没有拒绝审核权限');
+        }
         // 拒绝这条变更请求
         $actionService = new ActionService();
         $actionService->denyAction($action, Auth::user()->id);

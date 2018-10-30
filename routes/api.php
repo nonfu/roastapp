@@ -197,23 +197,23 @@ Route::group(['prefix' => 'v1/admin', 'middleware' => ['auth:api', 'owner']], fu
 
     /*
     |-------------------------------------------------------------------------------
-    | Approve specify action
+    | Approve specify action（隐式模型绑定）
     |-------------------------------------------------------------------------------
-    | URL:            /api/v1/admin/actions/{id}/approve
+    | URL:            /api/v1/admin/actions/{action}/approve
     | Controller:     API\Admin\ActionsController@putApproveAction
     | Method:         PUT
     | Description:    Approve specify action
     */
-    Route::put('/actions/{id}/approve', 'API\Admin\ActionsController@putApproveAction');
+    Route::put('/actions/{action}/approve', 'API\Admin\ActionsController@putApproveAction');
 
     /*
     |-------------------------------------------------------------------------------
-    | Deny specify action
+    | Deny specify action（隐式模型绑定）
     |-------------------------------------------------------------------------------
-    | URL:            /api/v1/admin/actions/{id}/deny
+    | URL:            /api/v1/admin/actions/{action}/deny
     | Controller:     API\Admin\ActionsController@putDenyAction
     | Method:         PUT
     | Description:    Deny specify action
     */
-    Route::put('/actions/{id}/deny', 'API\Admin\ActionsController@putDenyAction');
+    Route::put('/actions/{action}/deny', 'API\Admin\ActionsController@putDenyAction');
 });

@@ -43,7 +43,7 @@ class ActionService
      * @param \App\Models\Action $action Action being approved.
      * @param int processedBy
      */
-    public static function approveAction($action, $processedBy)
+    public function approveAction($action, $processedBy)
     {
         $action->status = Action::STATUS_APPROVED;
         $action->processed_by = $processedBy;
@@ -57,7 +57,7 @@ class ActionService
      * @param \App\Models\Action $action Action being denied.
      * @param int $processedBy
      */
-    public static function denyAction($action, $processedBy)
+    public function denyAction($action, $processedBy)
     {
         $action->status = Action::STATUS_DENIED;
         $action->processed_by = $processedBy;
