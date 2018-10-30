@@ -64,7 +64,7 @@ class GaodeMaps
             return $cities[0]->id;
         } else {
             $apiKey = config('services.gaode.ws_api_key'); // WebService API Key
-            $location = $latitude . ',' . $longitude;
+            $location = $longitude . ',' . $latitude;
             $url = 'https://restapi.amap.com/v3/geocode/regeo?location=' . $location . '&key=' . $apiKey;
             // 创建 Guzzle HTTP 客户端发起请求
             $client = new Client();
