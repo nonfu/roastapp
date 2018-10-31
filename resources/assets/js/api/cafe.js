@@ -33,7 +33,7 @@ export default {
         formData.append('city', city);
         formData.append('state', state);
         formData.append('zip', zip);
-        formData.append('brew_methods', brewMethods);
+        formData.append('brew_methods', JSON.stringify(brewMethods));
         formData.append('matcha', matcha);
         formData.append('tea', tea);
 
