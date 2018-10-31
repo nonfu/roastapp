@@ -16,6 +16,10 @@
 
 ![Roast编辑页](https://static.laravelacademy.org/wp-content/uploads/2018/10/9b2777f086dcb29bc9992fe4ce2d5e03.jpg)
 
+管理后台：
+
+![Roast管理后台](https://static.laravelacademy.org/wp-content/uploads/2018/10/5ceef38a7118b510e270cf78bf3a277d.jpg)
+
 ### 使用说明
 
     git clone https://github.com/nonfu/roastapp.git
