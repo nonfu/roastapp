@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\Models\Action;
-use App\User;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ActionPolicy
@@ -24,7 +24,7 @@ class ActionPolicy
      * If a user is an admin or super admin they can approve all actions.
      * If the user owns the company that owns the cafe then they can approve actions.
      *
-     * @param \App\User $user
+     * @param \App\Models\User $user
      * @param \App\Models\Action $action
      * @return bool
      */
@@ -43,7 +43,7 @@ class ActionPolicy
      * If a user is an admin or super admin they can deny all actions.
      * If the user owns the company that owns the cafe then they can deny actions.
      *
-     * @param \App\User $user
+     * @param User $user
      * @param \App\Models\Action $action
      * @return bool
      */

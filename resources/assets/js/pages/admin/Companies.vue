@@ -1,5 +1,28 @@
-<style scoped>
+<style lang="scss">
+    @import '~@/abstracts/_variables.scss';
 
+    div#admin-companies {
+        div.companies-header {
+            font-family: "Lato", sans-serif;
+            border-bottom: 1px solid black;
+            font-weight: bold;
+            padding-bottom: 10px;
+            img.sort-icon {
+                display: inline-block;
+                margin-left: 10px;
+            }
+            div.sortable-header {
+                cursor: pointer;
+            }
+        }
+        div.no-companies-available {
+            text-align: center;
+            font-family: "Lato", sans-serif;
+            font-size: 20px;
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+    }
 </style>
 
 <template>
@@ -21,8 +44,9 @@
         <div class="grid-container">
             <div class="grid-x companies-header">
                 <div class="large-3 medium-3 cell sortable-header" v-on:click="resortCafes('name')">
-                    公司
-                    <img class="sort-icon" src="/storage/img/sort-asc.svg" v-show="sortBy === 'name' && sortDirection === 'ASC'"/>
+                    公司名称
+                    <img class="sort-icon" src="/storage/img/sort-asc.svg"
+                         v-show="sortBy === 'name' && sortDirection === 'ASC'"/>
                     <img class="sort-icon" src="/storage/img/sort-desc.svg"
                          v-show="sortBy === 'name' && sortDirection === 'DESC'"/>
                 </div>
@@ -37,7 +61,7 @@
                          v-show="sortBy === 'cafes' && sortDirection === 'DESC'"/>
                 </div>
                 <div class="large-2 medium-2 cell sortable-header" v-on:click="resortCafes('pending-actions')">
-                    审核状态
+                    待审核动作
                     <img class="sort-icon" src="/storage/img/sort-asc.svg"
                          v-show="sortBy === 'pending-actions' && sortDirection === 'ASC'"/>
                     <img class="sort-icon" src="/storage/img/sort-desc.svg"
@@ -52,7 +76,7 @@
             </company>
 
             <div class="large-12 medium-12 cell no-companies-available" v-show="companies.length === 0">
-                没有匹配的公司
+                No companies available
             </div>
         </div>
     </div>
@@ -66,7 +90,6 @@
             return {
                 sortBy: 'name',
                 sortDirection: 'ASC',
-
                 search: ''
             }
         },
@@ -94,6 +117,7 @@
                 this.resortCafes('name');
             }
         },
+
         methods: {
             resortCafes(by) {
                 if (by === this.sortBy) {
@@ -127,7 +151,6 @@
                     if (this.sortDirection === 'ASC') {
                         return ((a.name === b.name) ? 0 : ((a.name > b.name) ? 1 : -1));
                     }
-
                     if (this.sortDirection === 'DESC') {
                         return ((a.name === b.name) ? 0 : ((a.name < b.name) ? 1 : -1));
                     }
@@ -139,7 +162,6 @@
                     if (this.sortDirection === 'ASC') {
                         return parseInt(a.cafes_count) < parseInt(b.cafes_count) ? 1 : -1;
                     }
-
                     if (this.sortDirection === 'DESC') {
                         return parseInt(a.cafes_count) > parseInt(b.cafes_count) ? 1 : -1;
                     }
@@ -151,7 +173,6 @@
                     if (this.sortDirection === 'ASC') {
                         return parseInt(a.actions_count) < parseInt(b.actions_count) ? 1 : -1;
                     }
-
                     if (this.sortDirection === 'DESC') {
                         return parseInt(a.actions_count) > parseInt(b.actions_count) ? 1 : -1;
                     }

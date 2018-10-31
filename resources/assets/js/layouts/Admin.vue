@@ -1,5 +1,5 @@
 <style lang="scss">
-    @import '~@/abstracts/_variables.scss';
+    @import "~@/abstracts/_variables.scss";
 
     div#admin-layout {
         div#page-container {
@@ -31,15 +31,20 @@
 </template>
 
 <script>
-    import SuccessNotification from '../components/global/SuccessNotification.vue';
-    import ErrorNotification from '../components/global/ErrorNotification.vue';
+    import SuccessNotification from "../components/global/SuccessNotification.vue";
+    import ErrorNotification from "../components/global/ErrorNotification.vue";
 
-    import AdminHeader from '../components/admin/AdminHeader.vue';
-    import Navigation from '../components/admin/Navigation.vue';
-    import PopOut from '../components/global/PopOut.vue';
+    import AdminHeader from "../components/admin/AdminHeader.vue";
+    import Navigation from "../components/admin/Navigation.vue";
+    import PopOut from "../components/global/PopOut.vue";
 
     // Import admin Vuex modules
-    import {actions} from '../modules/admin/actions.js';
+    import {actions} from "../modules/admin/actions.js";
+    import {companies} from '../modules/admin/companies.js';
+    import {cafes} from '../modules/admin/cafes.js';
+    import {users} from '../modules/admin/users.js';
+    import {brewMethods} from '../modules/admin/brewMethods.js';
+    import {cities} from '../modules/admin/cities.js';
 
     export default {
         components: {
@@ -51,14 +56,34 @@
         },
 
         created() {
-            this.$store.dispatch('loadBrewMethods');
+            this.$store.dispatch("loadBrewMethods");
 
-            if (!this.$store._modules.get(['admin'])) {
-                this.$store.registerModule('admin', {});
+            if (!this.$store._modules.get(["admin"])) {
+                this.$store.registerModule("admin", {});
             }
 
-            if (!this.$store._modules.get(['admin', 'actions'])) {
-                this.$store.registerModule(['admin', 'actions'], actions);
+            if (!this.$store._modules.get(["admin", "actions"])) {
+                this.$store.registerModule(["admin", "actions"], actions);
+            }
+
+            if (!this.$store._modules.get(['admin', 'companies'])) {
+                this.$store.registerModule(['admin', 'companies'], companies);
+            }
+
+            if (!this.$store._modules.get(['admin', 'cafes'])) {
+                this.$store.registerModule(['admin', 'cafes'], cafes);
+            }
+
+            if (!this.$store._modules.get(['admin', 'users']) && this.user.permission >= 2) {
+                this.$store.registerModule(['admin', 'users'], users);
+            }
+
+            if (!this.$store._modules.get(['admin', 'brewMethods']) && this.user.permission === 3) {
+                this.$store.registerModule(['admin', 'brewMethods'], brewMethods);
+            }
+
+            if (!this.$store._modules.get(['admin', 'cities']) && this.user.permission === 3) {
+                this.$store.registerModule(['admin', 'cities'], cities);
             }
         },
 
@@ -67,5 +92,5 @@
                 return this.$store.getters.getUser;
             }
         }
-    }
+    };
 </script>

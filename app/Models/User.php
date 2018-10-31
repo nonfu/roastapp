@@ -1,11 +1,7 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
-use App\Models\Action;
-use App\Models\Cafe;
-use App\Models\CafePhoto;
-use App\Models\Company;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;

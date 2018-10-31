@@ -6,7 +6,7 @@ use App\Models\Action;
 use App\Models\Cafe;
 use App\Services\ActionService;
 use App\Services\CafeService;
-use App\User;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;

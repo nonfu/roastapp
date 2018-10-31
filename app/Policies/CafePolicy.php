@@ -4,7 +4,7 @@ namespace App\Policies;
 
 use App\Models\Cafe;
 use App\Models\Company;
-use App\User;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class CafePolicy
@@ -31,7 +31,7 @@ class CafePolicy
      */
     public function create(User $user, Company $company)
     {
-        if ($user->permission == 2 || $user->permission == 3) {
+        if ($user->permission == User::ROLE_ADMIN || $user->permission == User::ROLE_SUPER_ADMIN) {
             return true;
         } else if ($company != null && $user->companiesOwned->contains($company->id)) {
             return true;
@@ -50,7 +50,7 @@ class CafePolicy
      */
     public function update(User $user, Cafe $cafe)
     {
-        if ($user->permission == 2 || $user->permission == 3) {
+        if ($user->permission == User::ROLE_ADMIN || $user->permission == User::ROLE_SUPER_ADMIN) {
             return true;
         } else if ($user->companiesOwned->contains($cafe->company_id)) {
             return true;
@@ -69,7 +69,7 @@ class CafePolicy
      */
     public function delete(User $user, Cafe $cafe)
     {
-        if ($user->permission == 2 || $user->permission == 3) {
+        if ($user->permission == User::ROLE_ADMIN || $user->permission == User::ROLE_SUPER_ADMIN) {
             return true;
         } else if ($user->companiesOwned->contains($cafe->company_id)) {
             return true;
@@ -78,4 +78,22 @@ class CafePolicy
         }
     }
 
+    /**
+     * If the user is an admin they can load a company. If the user
+     * owns the company they can view the company as well.
+     *
+     * @param User $user
+     * @param Cafe $cafe
+     * @return bool
+     */
+    public function view(User $user, Cafe $cafe)
+    {
+        if ($user->permission == User::ROLE_ADMIN || $user->permission == User::ROLE_SUPER_ADMIN) {
+            return true;
+        } else if ($user->companiesOwned->contains($cafe->company_id)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

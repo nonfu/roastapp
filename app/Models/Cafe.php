@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -25,7 +24,7 @@ class Cafe extends Model
     // 与 user 间的多对对关联
     public function likes()
     {
-        return $this->belongsToMany(user::class, 'users_cafes_likes', 'cafe_id', 'user_id');
+        return $this->belongsToMany(User::class, 'users_cafes_likes', 'cafe_id', 'user_id');
     }
 
     public function userLike()
@@ -42,5 +41,15 @@ class Cafe extends Model
     public function photos()
     {
         return $this->hasMany(CafePhoto::class, 'id', 'cafe_id');
+    }
+
+    public function actions()
+    {
+        return $this->hasMany(Action::class, 'cafe_id', 'id');
+    }
+
+    public function city()
+    {
+        return $this->belongsTo(City::class, 'city_id', 'id');
     }
 }

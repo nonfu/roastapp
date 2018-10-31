@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Company extends Model
@@ -17,5 +16,15 @@ class Company extends Model
     public function cafes()
     {
         return $this->hasMany(Cafe::class, 'company_id', 'id');
+    }
+
+    public function actions()
+    {
+        return $this->hasMany(Action::class, 'company_id', 'id');
+    }
+
+    public function addedBy()
+    {
+        return $this->belongsTo(User::class, 'added_by', 'id');
     }
 }
